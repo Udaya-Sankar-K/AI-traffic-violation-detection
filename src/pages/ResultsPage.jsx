@@ -11,7 +11,7 @@ import AppLayout from '../components/layout/AppLayout';
 import { SEVERITY_CONFIG, RECOMMENDATIONS, VIOLATION_META } from '../utils/mockData';
 import { useAuth } from '../contexts/AuthContext';
 
-// Annotated Image - draws bounding boxes over the image
+// Annotated Image - draws color-coded bounding boxes per violation type
 function AnnotatedImage({ preview, boundingBoxes, violationType }) {
   const canvasRef = useRef(null);
 
@@ -26,24 +26,52 @@ function AnnotatedImage({ preview, boundingBoxes, violationType }) {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      boundingBoxes?.forEach(box => {
+      boundingBoxes?.forEach((box, idx) => {
         const x = (box.x / 100) * img.width;
         const y = (box.y / 100) * img.height;
         const w = (box.width / 100) * img.width;
         const h = (box.height / 100) * img.height;
 
-        ctx.strokeStyle = '#C94C4C';
-        ctx.lineWidth = 3;
+        // Use violation-specific color or cycle through a palette
+        const boxColor = box.color || ['#C94C4C', '#C9824B', '#287C78', '#202421'][idx % 4];
+        const label = box.label || violationType;
+        const confPct = box.confidence ? ` ${(box.confidence * 100).toFixed(1)}%` : '';
+        const fullLabel = `${label}${confPct}`;
+
+        // Draw box
+        ctx.strokeStyle = boxColor;
+        ctx.lineWidth = Math.max(2, img.width * 0.003);
         ctx.strokeRect(x, y, w, h);
 
+        // Corner brackets for professional look
+        const bLen = Math.min(w, h) * 0.2;
+        ctx.strokeStyle = boxColor;
+        ctx.lineWidth = Math.max(3, img.width * 0.004);
+        // TL
+        ctx.beginPath(); ctx.moveTo(x, y + bLen); ctx.lineTo(x, y); ctx.lineTo(x + bLen, y); ctx.stroke();
+        // TR
+        ctx.beginPath(); ctx.moveTo(x + w - bLen, y); ctx.lineTo(x + w, y); ctx.lineTo(x + w, y + bLen); ctx.stroke();
+        // BL
+        ctx.beginPath(); ctx.moveTo(x, y + h - bLen); ctx.lineTo(x, y + h); ctx.lineTo(x + bLen, y + h); ctx.stroke();
+        // BR
+        ctx.beginPath(); ctx.moveTo(x + w - bLen, y + h); ctx.lineTo(x + w, y + h); ctx.lineTo(x + w, y + h - bLen); ctx.stroke();
+
         // Label background
-        ctx.fillStyle = 'rgba(201, 76, 76, 0.85)';
-        ctx.fillRect(x, y - 26, 160, 24);
+        const fontSize = Math.max(11, Math.min(16, img.width * 0.018));
+        ctx.font = `bold ${fontSize}px Poppins, Arial`;
+        const labelW = ctx.measureText(fullLabel).width + 14;
+        const labelH = fontSize + 10;
+        const labelY = y > labelH + 4 ? y - labelH - 2 : y + 2;
+
+        // Pill background
+        ctx.fillStyle = boxColor;
+        ctx.beginPath();
+        ctx.roundRect(x, labelY, labelW, labelH, 4);
+        ctx.fill();
 
         // Label text
-        ctx.fillStyle = 'white';
-        ctx.font = 'bold 12px Poppins';
-        ctx.fillText(`${violationType} ${(box.confidence * 100).toFixed(1)}%`, x + 6, y - 9);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillText(fullLabel, x + 7, labelY + fontSize + 1);
       });
     };
 
@@ -53,6 +81,8 @@ function AnnotatedImage({ preview, boundingBoxes, violationType }) {
   React.useEffect(() => {
     if (preview) drawAnnotations();
   }, [preview, boundingBoxes, drawAnnotations]);
+
+
 
   if (!preview) {
     return (
