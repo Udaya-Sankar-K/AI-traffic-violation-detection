@@ -140,10 +140,16 @@ export default function ResultsPage() {
     return null;
   }
 
+  // Normalise result — new engine always returns violations[] array
+  const allViolations = result.violations || (result.type && result.type !== 'Multiple Violations'
+    ? [{ type: result.type, severity: result.severity, confidence: result.confidence, vehicleType: result.vehicleType }]
+    : []);
+  const totalCount    = allViolations.length || result.totalViolations || 1;
   const severity       = SEVERITY_CONFIG[result.severity]       || SEVERITY_CONFIG.Medium;
-  const violationType  = result.isMultipleViolations ? 'Multiple Violations' : result.type;
+  const violationType  = totalCount > 1 ? 'Multiple Violations' : (result.type || 'Unknown');
   const recommendation = RECOMMENDATIONS[violationType] || RECOMMENDATIONS['Multiple Violations'];
-  const violationMeta  = VIOLATION_META[result.type]  || {};
+  const violationMeta  = VIOLATION_META[allViolations[0]?.type || result.type] || {};
+
 
   const downloadPDF = () => {
     const doc = new jsPDF();
@@ -233,20 +239,15 @@ export default function ResultsPage() {
               )}
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 16, fontWeight: 800, color: result.violationDetected ? '#C94C4C' : '#287C78', fontFamily: 'Poppins' }}>
-                  {result.isMultipleViolations
-                    ? `${result.totalViolations} Violations Detected`
-                    : result.violationDetected ? 'Violation Detected' : 'No Violation Found'}
+                  {result.violationDetected
+                    ? `${totalCount} Violation${totalCount > 1 ? 's' : ''} Detected`
+                    : 'No Violation Found'}
                 </div>
                 <div style={{ fontSize: 12, color: '#5A6060', marginTop: 2 }}>
                   Processed in {result.processingTime}s • AI Confidence: {result.confidence}%
                 </div>
               </div>
-              {/* Model support badge */}
-              {violationMeta.modelSupported === false && (
-                <span style={{ fontSize: 10, padding: '3px 8px', background: 'rgba(201,130,75,0.1)', border: '1px solid rgba(201,130,75,0.25)', borderRadius: 8, color: '#C9824B', fontWeight: 600 }}>
-                  SIMULATION
-                </span>
-              )}
+
             </motion.div>
 
             {/* Annotated Image */}
@@ -370,8 +371,8 @@ export default function ResultsPage() {
                   </div>
                 </motion.div>
 
-                {/* Multiple Violations Breakdown */}
-                {result.isMultipleViolations && result.violations?.length > 0 && (
+                {/* Violations Breakdown — always shown when violation is detected */}
+                {result.violationDetected && allViolations.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -381,18 +382,20 @@ export default function ResultsPage() {
                   >
                     <div style={{ fontSize: 13, fontWeight: 700, color: '#202421', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
                       <AlertTriangle size={14} color="#C94C4C" />
-                      {result.totalViolations} Detected Violations
+                      All Detected Violations ({allViolations.length})
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                      {result.violations.map((v, i) => {
+                      {allViolations.map((v, i) => {
                         const vm = VIOLATION_META[v.type] || {};
                         const sv = SEVERITY_CONFIG[v.severity] || SEVERITY_CONFIG.Medium;
+                        const conf = typeof v.confidence === 'number' ? v.confidence : result.confidence;
                         return (
                           <div key={i} style={{
                             padding: '12px 14px',
                             background: '#FFFFFF',
-                            border: `1px solid ${sv.border}`,
+                            border: `1px solid ${sv.border || 'rgba(32,36,33,0.1)'}`,
                             borderRadius: 10,
+                            borderLeft: `3px solid ${vm.color || sv.color || '#C94C4C'}`,
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -405,7 +408,7 @@ export default function ResultsPage() {
                                 }}>{vm.iconLabel || 'VIOLATION'}</span>
                                 <div>
                                   <div style={{ fontSize: 12.5, fontWeight: 700, color: '#202421' }}>{v.type}</div>
-                                  <div style={{ fontSize: 10, color: '#8A9090' }}>{v.vehicleType} • AI Detected</div>
+                                  <div style={{ fontSize: 10, color: '#8A9090' }}>{v.vehicleType || 'Two-Wheeler'} • AI Detected</div>
                                 </div>
                               </div>
                               <span className={`badge ${v.severity === 'Critical' ? 'badge-critical' : v.severity === 'High' ? 'badge-red' : v.severity === 'Medium' ? 'badge-orange' : 'badge-green'}`} style={{ fontSize: 9 }}>
@@ -417,12 +420,12 @@ export default function ResultsPage() {
                                 <motion.div
                                   className="progress-fill"
                                   initial={{ width: 0 }}
-                                  animate={{ width: `${v.confidence}%` }}
-                                  transition={{ duration: 0.8, delay: 0.4 + i * 0.1 }}
-                                  style={{ background: sv.color }}
+                                  animate={{ width: `${conf}%` }}
+                                  transition={{ duration: 0.8, delay: 0.4 + i * 0.12 }}
+                                  style={{ background: vm.color || sv.color || '#C94C4C' }}
                                 />
                               </div>
-                              <span style={{ fontSize: 11, color: '#287C78', fontWeight: 700, minWidth: 38 }}>{v.confidence.toFixed(1)}%</span>
+                              <span style={{ fontSize: 11, color: '#287C78', fontWeight: 700, minWidth: 42 }}>{conf.toFixed ? conf.toFixed(1) : conf}%</span>
                             </div>
                           </div>
                         );
@@ -430,6 +433,7 @@ export default function ResultsPage() {
                     </div>
                   </motion.div>
                 )}
+
 
                 {/* Repeat Offender Warning */}
                 {result.isRepeatOffender && (

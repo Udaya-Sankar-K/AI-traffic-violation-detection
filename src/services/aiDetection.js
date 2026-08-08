@@ -1,15 +1,17 @@
 /**
- * AI Detection Engine — TVDS
+ * AI Detection Engine — TVDS v3.0
  *
- * All 8 violation types are now active.
- * Smart co-occurrence: related violations fire together (e.g. helmetless + triple riding).
- * Multi-violation probability: 55% (was 15%).
- * No-violation rate: 8% (was 15%).
+ * KEY RULES:
+ * 1. Violation FAMILIES always fire together — Triple Riding always includes Helmetless Riding.
+ * 2. Minimum 2 violations always detected (unless truly clean image).
+ * 3. All 7 core violation types are active and detectable.
+ * 4. Realistic processing time: 8–15 seconds.
+ * 5. Never miss a co-occurring violation.
  */
 
 import { ALL_VIOLATION_TYPES, VIOLATION_META, computeOverallSeverity } from '../utils/mockData';
 
-// ─── Config ───────────────────────────────────────────────────────────────────
+// ─── Locations ────────────────────────────────────────────────────────────────
 
 const LOCATIONS = [
   'MG Road Junction, Bangalore',
@@ -31,50 +33,51 @@ const PLATES = [
   'KA-02-GG-6666', 'KA-05-AB-8888', 'MH-14-XX-4321',
 ];
 
-// All types are now supported
-const SUPPORTED_TYPES = ALL_VIOLATION_TYPES.filter(v => v.modelSupported && v.type !== 'Multiple Violations');
+// ─── VIOLATION FAMILIES ───────────────────────────────────────────────────────
+// Members of the same family ALWAYS occur together. If one is selected,
+// ALL members of the family are included automatically.
+//
+// This is the core fix: Triple Riding ALWAYS comes with Helmetless Riding.
 
-// ─── Smart Co-occurrence Groups ───────────────────────────────────────────────
-// When one violation is detected, these other violations commonly appear together.
-// This mirrors real-world traffic violation patterns.
-
-const CO_OCCURRENCE_GROUPS = [
-  // Two-wheeler violations cluster
+const VIOLATION_FAMILIES = [
   {
-    primary: ['Helmetless Riding', 'Triple Riding'],
-    secondaries: ['Helmetless Riding', 'Triple Riding', 'Illegal Parking'],
-    weight: 0.32,  // 32% of all detections are two-wheeler clusters
+    id: 'two_wheeler_unsafe',
+    // Triple riding + no helmet — always together, very high frequency
+    members: ['Triple Riding', 'Helmetless Riding'],
+    extraChance: 0.45,   // 45% chance of also adding Illegal Parking
+    extra: ['Illegal Parking'],
+    weight: 0.40,        // 40% of all detections are two-wheeler families
   },
-  // Signal/junction violations
   {
-    primary: ['Signal Jumping'],
-    secondaries: ['Signal Jumping', 'Wrong-Way Driving', 'Zebra-Crossing Violation'],
+    id: 'helmet_only',
+    // Single rider, no helmet (but not triple riding)
+    members: ['Helmetless Riding'],
+    extraChance: 0.30,
+    extra: ['Illegal Parking'],
     weight: 0.18,
   },
-  // Parking violations cluster
   {
-    primary: ['Illegal Parking', 'No-Parking Zone Violation'],
-    secondaries: ['Illegal Parking', 'No-Parking Zone Violation'],
+    id: 'signal_violation',
+    members: ['Signal Jumping', 'Zebra-Crossing Violation'],
+    extraChance: 0.20,
+    extra: ['Wrong-Way Driving'],
+    weight: 0.18,
+  },
+  {
+    id: 'parking_cluster',
+    members: ['Illegal Parking', 'No-Parking Zone Violation'],
+    extraChance: 0.25,
+    extra: ['Helmetless Riding'],
     weight: 0.14,
   },
-  // High severity cluster
   {
-    primary: ['Wrong-Way Driving', 'Signal Jumping'],
-    secondaries: ['Wrong-Way Driving', 'Signal Jumping', 'Zebra-Crossing Violation'],
+    id: 'wrong_way',
+    members: ['Wrong-Way Driving', 'Signal Jumping'],
+    extraChance: 0.15,
+    extra: ['Zebra-Crossing Violation'],
     weight: 0.10,
   },
 ];
-
-// Standalone violation weights (for single-violation detections)
-const SINGLE_WEIGHTS = {
-  'Helmetless Riding':         0.26,
-  'Triple Riding':             0.18,
-  'Signal Jumping':            0.16,
-  'Illegal Parking':           0.14,
-  'No-Parking Zone Violation': 0.10,
-  'Zebra-Crossing Violation':  0.08,
-  'Wrong-Way Driving':         0.08,
-};
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -91,86 +94,67 @@ function generateHash() {
 }
 
 /**
- * Generate annotated bounding boxes.
- * Positions vary by violation type for realistic placement.
+ * Get realistic bounding box position per violation type.
+ * Different violations appear in different image regions.
  */
 function generateBoundingBoxes(violationType, index = 0) {
-  // Different violations appear in different areas of the image
   const regionMap = {
-    'Helmetless Riding':         { xBase: 10, yBase: 5,  wBase: 28, hBase: 35 },
-    'Triple Riding':             { xBase: 8,  yBase: 10, wBase: 45, hBase: 50 },
-    'Signal Jumping':            { xBase: 20, yBase: 30, wBase: 55, hBase: 40 },
-    'Illegal Parking':           { xBase: 5,  yBase: 40, wBase: 60, hBase: 45 },
-    'No-Parking Zone Violation': { xBase: 5,  yBase: 45, wBase: 65, hBase: 40 },
-    'Zebra-Crossing Violation':  { xBase: 15, yBase: 50, wBase: 70, hBase: 35 },
-    'Wrong-Way Driving':         { xBase: 20, yBase: 15, wBase: 55, hBase: 60 },
+    'Helmetless Riding':         { x: 12, y:  5, w: 35, h: 35 },  // Head/upper body area
+    'Triple Riding':             { x:  5, y: 10, w: 55, h: 55 },  // Full vehicle + riders
+    'Signal Jumping':            { x: 18, y: 25, w: 60, h: 45 },
+    'Illegal Parking':           { x:  5, y: 38, w: 65, h: 48 },
+    'No-Parking Zone Violation': { x:  3, y: 42, w: 70, h: 44 },
+    'Zebra-Crossing Violation':  { x: 10, y: 48, w: 75, h: 38 },
+    'Wrong-Way Driving':         { x: 15, y: 10, w: 60, h: 65 },
   };
 
-  const region = regionMap[violationType] ?? { xBase: 10 + index * 20, yBase: 15, wBase: 30, hBase: 35 };
-  const jitter = () => rand(-6, 6);
+  const r = regionMap[violationType] ?? { x: 8 + index * 15, y: 12, w: 38, h: 40 };
+  const jitter = () => rand(-4, 4);
 
   return [{
-    x: Math.max(2, region.xBase + jitter()),
-    y: Math.max(2, region.yBase + jitter()),
-    width: region.wBase + rand(-5, 8),
-    height: region.hBase + rand(-5, 8),
+    x: Math.max(2, r.x + jitter()),
+    y: Math.max(2, r.y + jitter()),
+    width:  r.w + rand(-4, 6),
+    height: r.h + rand(-4, 6),
     label: violationType,
-    confidence: rand(0.83, 0.97),
+    confidence: rand(0.84, 0.97),
     modelClass: VIOLATION_META[violationType]?.modelClass ?? 'unknown',
     color: VIOLATION_META[violationType]?.color ?? '#C94C4C',
   }];
 }
 
 /**
- * Build a single detected violation payload.
+ * Build a single violation payload.
  */
-function buildViolationPayload(violationType, file, sharedLocation = null, sharedPlate = null) {
-  const meta = VIOLATION_META[violationType] ?? {};
-  const confidence = parseFloat(rand(85, 97.5).toFixed(1));
-  const location = sharedLocation ?? LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
-  const plate = sharedPlate ?? PLATES[Math.floor(Math.random() * PLATES.length)];
+function buildViolationPayload(type, sharedLocation, sharedPlate, index = 0) {
+  const meta = VIOLATION_META[type] ?? {};
   const isRepeat = Math.random() < 0.28;
-
   return {
-    type: violationType,
+    type,
     severity: meta.severity ?? 'Medium',
     vehicleType: meta.vehicleType ?? 'Two-Wheeler',
-    confidence,
-    location,
-    plateNumber: plate,
-    boundingBoxes: generateBoundingBoxes(violationType),
+    confidence: parseFloat(rand(85.5, 97.8).toFixed(1)),
+    location: sharedLocation,
+    plateNumber: sharedPlate,
+    boundingBoxes: generateBoundingBoxes(type, index),
     isRepeatOffender: isRepeat,
-    previousViolations: isRepeat ? Math.floor(rand(2, 7)) : 0,
+    previousViolations: isRepeat ? Math.floor(rand(1, 7)) : 0,
     modelClass: meta.modelClass,
     modelSupported: true,
   };
 }
 
 /**
- * Pick a single violation type based on weighted probability.
+ * Pick a violation family based on weights.
  */
-function sampleSingleViolationType() {
-  const entries = Object.entries(SINGLE_WEIGHTS);
-  const total = entries.reduce((s, [, w]) => s + w, 0);
+function pickFamily() {
+  const total = VIOLATION_FAMILIES.reduce((s, f) => s + f.weight, 0);
   let r = Math.random() * total;
-  for (const [type, weight] of entries) {
-    r -= weight;
-    if (r <= 0) return type;
+  for (const family of VIOLATION_FAMILIES) {
+    r -= family.weight;
+    if (r <= 0) return family;
   }
-  return 'Helmetless Riding';
-}
-
-/**
- * Pick a co-occurrence group based on weights.
- */
-function sampleCoOccurrenceGroup() {
-  const total = CO_OCCURRENCE_GROUPS.reduce((s, g) => s + g.weight, 0);
-  let r = Math.random() * total;
-  for (const group of CO_OCCURRENCE_GROUPS) {
-    r -= group.weight;
-    if (r <= 0) return group;
-  }
-  return CO_OCCURRENCE_GROUPS[0];
+  return VIOLATION_FAMILIES[0];
 }
 
 // ─── Main Detection Function ──────────────────────────────────────────────────
@@ -178,79 +162,73 @@ function sampleCoOccurrenceGroup() {
 /**
  * runDetection(file)
  *
- * Simulates realistic YOLO/Roboflow detection.
- * - 8% chance: no violation
- * - 37% chance: single violation
- * - 55% chance: multiple violations (2–3 co-occurring)
- *
- * Returns a structured DetectionResult object.
+ * Realistic AI simulation:
+ * - Takes 8–15 seconds to process (realistic for deep learning inference)
+ * - 92% chance of detecting violations
+ * - Violations always detected in families (Triple Riding always with Helmetless Riding)
+ * - Returns complete DetectionResult with all violations listed
  */
 export async function runDetection(file) {
-  // Realistic AI processing delay
-  await new Promise(r => setTimeout(r, rand(1800, 3200)));
+  // ── Realistic AI processing time: 8–15 seconds ──────────────────────────
+  await new Promise(r => setTimeout(r, rand(8000, 15000)));
 
   const recordId = generateRecordId();
   const timestamp = new Date().toISOString();
-  const processingTime = rand(1.5, 3.2).toFixed(2);
+  const processingTime = rand(8.2, 14.8).toFixed(2);
   const fileSize = file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : '2.4 MB';
   const fileHash = generateHash();
   const base = { recordId, timestamp, processingTime, fileSize, fileHash, evidenceIntegrity: 'VERIFIED' };
 
-  const roll = Math.random();
-
-  // ── 8% chance: no violation ──────────────────────────────────────────────
-  if (roll < 0.08) {
+  // ── 8% chance: clean image, no violation ────────────────────────────────
+  if (Math.random() < 0.08) {
     return {
       ...base,
       violationDetected: false,
       message: 'No violation detected in this media.',
-      confidence: parseFloat(rand(89, 96).toFixed(1)),
+      confidence: parseFloat(rand(90, 96).toFixed(1)),
       boundingBoxes: [],
     };
   }
 
-  // Shared location + plate for all violations in the same detection (same vehicle)
+  // ── Shared context (same vehicle/incident) ───────────────────────────────
   const sharedLocation = LOCATIONS[Math.floor(Math.random() * LOCATIONS.length)];
   const sharedPlate = PLATES[Math.floor(Math.random() * PLATES.length)];
 
-  // ── 37% chance: single violation ─────────────────────────────────────────
-  if (roll < 0.45) {
-    const type = sampleSingleViolationType();
-    const payload = buildViolationPayload(type, file, sharedLocation, sharedPlate);
-    return {
-      ...base,
-      violationDetected: true,
-      isMultipleViolations: false,
-      ...payload,
-    };
+  // ── Pick a violation family ──────────────────────────────────────────────
+  const family = pickFamily();
+
+  // Start with all mandatory family members
+  const violationTypes = [...family.members];
+
+  // Possibly add extra violations from the family's extras
+  if (Math.random() < family.extraChance && family.extra?.length > 0) {
+    for (const extra of family.extra) {
+      if (!violationTypes.includes(extra)) {
+        violationTypes.push(extra);
+      }
+    }
   }
 
-  // ── 55% chance: multiple violations (co-occurrence group) ─────────────────
-  const group = sampleCoOccurrenceGroup();
-
-  // Pick 2–3 violations from the group's secondaries (no duplicates)
-  const available = [...new Set(group.secondaries)];
-  const shuffled = available.sort(() => Math.random() - 0.5);
-  const count = Math.min(shuffled.length, Math.floor(rand(2, 3.99)));
-  const picked = shuffled.slice(0, count);
-
-  const violations = picked.map((type) => ({
-    ...buildViolationPayload(type, file, sharedLocation, sharedPlate),
-  }));
+  // Build violation payloads for each detected type
+  const violations = violationTypes.map((type, i) =>
+    buildViolationPayload(type, sharedLocation, sharedPlate, i)
+  );
 
   const allBoxes = violations.flatMap(v => v.boundingBoxes);
-  const overallSeverity = computeOverallSeverity(picked);
+  const overallSeverity = computeOverallSeverity(violationTypes);
   const maxConfidence = Math.max(...violations.map(v => v.confidence));
+  const isMultiple = violations.length > 1;
 
+  // ── Always return isMultipleViolations=true when >1 violations ──────────
   return {
     ...base,
     violationDetected: true,
-    isMultipleViolations: true,
-    type: `Multiple Violations (${count})`,
+    isMultipleViolations: isMultiple,
+    type: isMultiple ? `Multiple Violations (${violations.length})` : violations[0].type,
     severity: overallSeverity,
     overallSeverity,
-    totalViolations: count,
-    violations,
+    totalViolations: violations.length,
+    violations,                          // ALL violations listed here
     confidence: parseFloat(maxConfidence.toFixed(1)),
     vehicleType: violations[0]?.vehicleType ?? 'Two-Wheeler',
     location: sharedLocation,
@@ -263,7 +241,7 @@ export async function runDetection(file) {
 
 // ─── Model Support Checker ────────────────────────────────────────────────────
 export function getUnsupportedViolationTypes() {
-  return []; // All violation types are now model-supported
+  return []; // All 7 violation types are fully enabled
 }
 
 // ─── Real Roboflow API (swap in when ready) ───────────────────────────────────
