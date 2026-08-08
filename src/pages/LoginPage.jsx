@@ -6,27 +6,22 @@ import { useAuth } from '../contexts/AuthContext';
 import FaceCaptureModal from '../components/auth/FaceCaptureModal';
 
 export default function LoginPage() {
-  const navigate   = useNavigate();
-  const { login }  = useAuth();
+  const navigate  = useNavigate();
+  const { login } = useAuth();
 
   const [form,     setForm]     = useState({ policeId: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading,  setLoading]  = useState(false);
   const [error,    setError]    = useState('');
-  const [step,     setStep]     = useState(1);   // 1 = credentials, 2 = face verify
-
-  // ── Step 1: Validate credentials → open face modal ─────────────────────
+  const [step,     setStep]     = useState(1);
 
   const handleCredentialsSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
-      // Validate credentials first (but don't complete login yet)
       await login(form.policeId, form.password, { dryRun: true });
     } catch (err) {
-      // If credentials are invalid stop here
       if (err.message?.toLowerCase().includes('invalid') ||
           err.message?.toLowerCase().includes('password') ||
           err.message?.toLowerCase().includes('not found')) {
@@ -34,14 +29,10 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
-      // Otherwise allow demo mode through (credentials accepted)
     }
-
     setLoading(false);
-    setStep(2); // open face verification
+    setStep(2);
   };
-
-  // ── Step 2: Face verified → complete login ──────────────────────────────
 
   const handleFaceSuccess = async () => {
     setStep(1);
@@ -61,110 +52,133 @@ export default function LoginPage() {
     setError('Face verification is required to access the system. Please try again.');
   };
 
-  // ── Render ──────────────────────────────────────────────────────────────
-
   return (
     <>
       <div style={{
-        minHeight: '100vh', background: '#0F172A',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        position: 'relative', overflow: 'hidden',
+        minHeight: '100vh',
+        background: '#F7F6F2',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
       }}>
-        {/* Grid bg */}
-        <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
-        {/* Orbs */}
-        <div style={{ position: 'absolute', top: '-20%', left: '-10%', width: 600, height: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', bottom: '-20%', right: '-10%', width: 500, height: 500, background: 'radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 70%)', borderRadius: '50%' }} />
+        {/* Subtle background pattern */}
+        <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
 
-        <motion.div
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: '100%', maxWidth: 440, padding: '0 24px', position: 'relative', zIndex: 1 }}
-        >
-          {/* Logo */}
-          <div style={{ textAlign: 'center', marginBottom: 36 }}>
-            <motion.div
-              initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: 0.4, type: 'spring' }}
-              style={{
-                width: 64, height: 64,
-                background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-                borderRadius: 18,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                margin: '0 auto 16px',
-                boxShadow: '0 12px 40px rgba(37,99,235,0.4)',
-              }}
-            >
-              <Shield size={28} color="white" />
-            </motion.div>
-            <h1 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 6 }}>
-              Officer Sign In
-            </h1>
-            <p style={{ fontSize: 13.5, color: '#64748B' }}>Traffic Violation Detection System</p>
+        {/* Left accent panel */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '42%',
+          background: '#202421',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          padding: 48,
+        }}>
+          <div style={{ textAlign: 'center', maxWidth: 320 }}>
+            <div style={{
+              width: 72, height: 72,
+              background: '#287C78',
+              borderRadius: 18,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 24px',
+            }}>
+              <Shield size={34} color="white" />
+            </div>
+            <h2 style={{ fontSize: 26, fontWeight: 700, color: '#FFFFFF', fontFamily: 'Poppins', marginBottom: 12 }}>
+              TVDS
+            </h2>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', fontFamily: 'Poppins', lineHeight: 1.7 }}>
+              AI-Powered Traffic Violation Detection System for Traffic Enforcement Officers
+            </p>
+            <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { icon: '🔍', text: 'AI-powered violation detection' },
+                { icon: '📋', text: 'Centralized records management' },
+                { icon: '📊', text: 'Real-time analytics dashboard' },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: 'rgba(255,255,255,0.05)', borderRadius: 10 }}>
+                  <span style={{ fontSize: 18 }}>{item.icon}</span>
+                  <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', fontFamily: 'Poppins' }}>{item.text}</span>
+                </div>
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* 2-Factor Indicators */}
-          <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
+        {/* Right: Login form */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.45 }}
+          style={{
+            width: '100%', maxWidth: 460,
+            marginLeft: '42%',
+            padding: '48px 52px',
+            position: 'relative', zIndex: 1,
+          }}
+        >
+          <h1 style={{ fontSize: 26, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 6 }}>
+            Officer Sign In
+          </h1>
+          <p style={{ fontSize: 13.5, color: '#8A9090', fontFamily: 'Poppins', marginBottom: 32 }}>
+            Enter your credentials to access the system
+          </p>
+
+          {/* 2-Factor step indicators */}
+          <div style={{ display: 'flex', gap: 10, marginBottom: 28 }}>
             {[
-              { n: 1, icon: Lock, label: 'Credentials', active: step >= 1 },
-              { n: 2, icon: Scan, label: 'Face Verify', active: step >= 2 },
+              { n: 1, icon: Lock,  label: 'Credentials' },
+              { n: 2, icon: Scan,  label: 'Face Verify' },
             ].map(s => (
-              <motion.div
+              <div
                 key={s.n}
-                animate={{
-                  background: s.active ? 'rgba(37,99,235,0.1)' : 'rgba(255,255,255,0.02)',
-                  borderColor: s.active ? 'rgba(37,99,235,0.3)' : 'rgba(255,255,255,0.07)',
-                }}
                 style={{
-                  flex: 1, padding: '10px 14px', borderRadius: 12, border: '1px solid',
+                  flex: 1, padding: '10px 14px', borderRadius: 10,
+                  border: `1.5px solid ${step >= s.n ? '#287C78' : 'rgba(32,36,33,0.12)'}`,
+                  background: step >= s.n ? 'rgba(40,124,120,0.07)' : '#FFFFFF',
                   display: 'flex', alignItems: 'center', gap: 9,
+                  transition: 'all 0.25s',
                 }}
               >
-                <motion.div
-                  animate={{
-                    background: s.active ? 'linear-gradient(135deg, #2563EB, #06B6D4)' : 'rgba(255,255,255,0.04)',
-                  }}
-                  style={{
-                    width: 28, height: 28, borderRadius: 8,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                >
-                  <s.icon size={13} color={s.active ? 'white' : '#475569'} />
-                </motion.div>
+                <div style={{
+                  width: 28, height: 28, borderRadius: 8,
+                  background: step >= s.n ? '#287C78' : 'rgba(32,36,33,0.07)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <s.icon size={13} color={step >= s.n ? 'white' : '#8A9090'} />
+                </div>
                 <div>
-                  <div style={{ fontSize: 10, color: '#64748B', marginBottom: 1 }}>Step {s.n}</div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: s.active ? '#F8FAFC' : '#475569' }}>
+                  <div style={{ fontSize: 10, color: '#8A9090', marginBottom: 1, fontFamily: 'Poppins' }}>Step {s.n}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: step >= s.n ? '#202421' : '#8A9090', fontFamily: 'Poppins' }}>
                     {s.label}
                   </div>
                 </div>
-                {step > s.n && (
-                  <CheckCircle size={14} color="#22C55E" style={{ marginLeft: 'auto' }} />
-                )}
-              </motion.div>
+                {step > s.n && <CheckCircle size={14} color="#287C78" style={{ marginLeft: 'auto' }} />}
+              </div>
             ))}
           </div>
 
           {/* Card */}
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 24, padding: 32,
-            backdropFilter: 'blur(20px)',
+            background: '#FFFFFF',
+            border: '1px solid rgba(32,36,33,0.1)',
+            borderRadius: 16, padding: 28,
+            boxShadow: '0 2px 12px rgba(32,36,33,0.07)',
           }}>
             {/* Demo hint */}
             <div style={{
-              background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.2)',
-              borderRadius: 10, padding: '10px 14px', marginBottom: 24,
+              background: 'rgba(40,124,120,0.07)',
+              border: '1px solid rgba(40,124,120,0.18)',
+              borderRadius: 9, padding: '9px 13px', marginBottom: 22,
               display: 'flex', alignItems: 'center', gap: 8,
             }}>
-              <CheckCircle size={14} color="#06B6D4" />
-              <span style={{ fontSize: 12, color: '#94A3B8' }}>
-                <strong style={{ color: '#06B6D4' }}>Demo:</strong> Any Police ID + 6+ char password → face verification auto-succeeds
+              <CheckCircle size={14} color="#287C78" />
+              <span style={{ fontSize: 12, color: '#5A6060', fontFamily: 'Poppins' }}>
+                <strong style={{ color: '#287C78' }}>Demo:</strong> Any Police ID + 6+ char password works
               </span>
             </div>
 
             <AnimatePresence mode="wait">
-              {/* ─ Step 1: Credentials form ─ */}
               {!loading && (
                 <motion.form
                   key="form"
@@ -175,8 +189,8 @@ export default function LoginPage() {
                   style={{ display: 'flex', flexDirection: 'column', gap: 18 }}
                 >
                   <div>
-                    <label style={{ fontSize: 12.5, color: '#94A3B8', fontWeight: 500, marginBottom: 7, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <User size={13} /> Police ID / Force Number
+                    <label style={{ fontSize: 12.5, color: '#5A6060', fontWeight: 500, marginBottom: 7, display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'Poppins' }}>
+                      <User size={13} color="#287C78" /> Police ID / Force Number
                     </label>
                     <input
                       className="input-field"
@@ -188,8 +202,8 @@ export default function LoginPage() {
                   </div>
 
                   <div>
-                    <label style={{ fontSize: 12.5, color: '#94A3B8', fontWeight: 500, marginBottom: 7, display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <Lock size={13} /> Password
+                    <label style={{ fontSize: 12.5, color: '#5A6060', fontWeight: 500, marginBottom: 7, display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'Poppins' }}>
+                      <Lock size={13} color="#287C78" /> Password
                     </label>
                     <div style={{ position: 'relative' }}>
                       <input
@@ -204,7 +218,7 @@ export default function LoginPage() {
                       <button
                         type="button"
                         onClick={() => setShowPass(!showPass)}
-                        style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}
+                        style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8A9090' }}
                       >
                         {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
@@ -216,24 +230,25 @@ export default function LoginPage() {
                       initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8,
-                        background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
-                        borderRadius: 10, padding: '10px 14px',
+                        background: 'rgba(201,76,76,0.08)',
+                        border: '1px solid rgba(201,76,76,0.2)',
+                        borderRadius: 9, padding: '10px 14px',
                       }}
                     >
-                      <AlertCircle size={14} color="#EF4444" />
-                      <span style={{ fontSize: 13, color: '#EF4444' }}>{error}</span>
+                      <AlertCircle size={14} color="#C94C4C" />
+                      <span style={{ fontSize: 13, color: '#C94C4C', fontFamily: 'Poppins' }}>{error}</span>
                     </motion.div>
                   )}
 
-                  {/* Security info */}
                   <div style={{
-                    display: 'flex', alignItems: 'center', gap: 8, fontSize: 11.5, color: '#475569',
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    fontSize: 11.5, color: '#8A9090', fontFamily: 'Poppins',
                     padding: '8px 12px',
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.05)',
-                    borderRadius: 9,
+                    background: '#F7F6F2',
+                    border: '1px solid rgba(32,36,33,0.08)',
+                    borderRadius: 8,
                   }}>
-                    <Fingerprint size={13} color="#2563EB" />
+                    <Fingerprint size={13} color="#287C78" />
                     Face biometric verification required after credentials
                   </div>
 
@@ -250,7 +265,6 @@ export default function LoginPage() {
                 </motion.form>
               )}
 
-              {/* ─ Loading: completing login ─ */}
               {loading && (
                 <motion.div
                   key="auth"
@@ -263,15 +277,15 @@ export default function LoginPage() {
                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     style={{
                       width: 40, height: 40,
-                      border: '3px solid rgba(37,99,235,0.2)',
-                      borderTopColor: '#2563EB',
+                      border: '3px solid rgba(40,124,120,0.2)',
+                      borderTopColor: '#287C78',
                       borderRadius: '50%', margin: '0 auto 16px',
                     }}
                   />
-                  <div style={{ fontSize: 15, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 6 }}>
+                  <div style={{ fontSize: 15, fontWeight: 600, color: '#202421', fontFamily: 'Poppins', marginBottom: 6 }}>
                     Completing Sign In…
                   </div>
-                  <div style={{ fontSize: 12, color: '#64748B' }}>
+                  <div style={{ fontSize: 12, color: '#8A9090', fontFamily: 'Poppins' }}>
                     Face verified · Loading dashboard
                   </div>
                 </motion.div>
@@ -279,17 +293,16 @@ export default function LoginPage() {
             </AnimatePresence>
           </div>
 
-          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13.5, color: '#64748B' }}>
+          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13.5, color: '#8A9090', fontFamily: 'Poppins' }}>
             New officer?{' '}
-            <Link to="/signup" style={{ color: '#2563EB', fontWeight: 600, textDecoration: 'none' }}>Create account</Link>
+            <Link to="/signup" style={{ color: '#287C78', fontWeight: 600, textDecoration: 'none' }}>Create account</Link>
           </p>
-          <p style={{ textAlign: 'center', marginTop: 10, fontSize: 13, color: '#475569' }}>
-            <Link to="/" style={{ color: '#475569', textDecoration: 'none' }}>← Back to Home</Link>
+          <p style={{ textAlign: 'center', marginTop: 10, fontSize: 13, color: '#8A9090', fontFamily: 'Poppins' }}>
+            <Link to="/" style={{ color: '#8A9090', textDecoration: 'none' }}>← Back to Home</Link>
           </p>
         </motion.div>
       </div>
 
-      {/* Face verification modal */}
       <AnimatePresence>
         {step === 2 && (
           <FaceCaptureModal
@@ -300,8 +313,6 @@ export default function LoginPage() {
           />
         )}
       </AnimatePresence>
-
-      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </>
   );
 }

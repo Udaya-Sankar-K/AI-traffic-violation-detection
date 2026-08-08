@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Eye, EyeOff, AlertCircle, CheckCircle, User, Mail, MapPin, BadgeCheck, Scan } from 'lucide-react';
@@ -29,28 +29,29 @@ function StepIndicator({ step }) {
             <motion.div
               animate={{
                 background: step >= s.n
-                  ? 'linear-gradient(135deg, #2563EB, #06B6D4)'
-                  : 'rgba(255,255,255,0.04)',
-                borderColor: step >= s.n ? '#2563EB' : 'rgba(255,255,255,0.1)',
-                boxShadow: step === s.n ? '0 0 16px rgba(37,99,235,0.45)' : 'none',
+                  ? '#287C78'
+                  : '#FFFFFF',
+                borderColor: step >= s.n ? '#287C78' : 'rgba(32,36,33,0.1)',
+                boxShadow: step === s.n ? '0 2px 8px rgba(40,124,120,0.15)' : 'none',
               }}
               style={{
                 width: 36, height: 36, borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 border: '2px solid', fontSize: 13, fontWeight: 700,
-                color: step >= s.n ? 'white' : '#475569',
+                color: step >= s.n ? 'white' : '#8A9090',
+                fontFamily: 'Poppins'
               }}
             >
-              {step > s.n ? '✓' : s.n}
+              {step > s.n ? 'âœ“' : s.n}
             </motion.div>
-            <div style={{ fontSize: 10, color: step >= s.n ? '#94A3B8' : '#475569', whiteSpace: 'nowrap' }}>{s.label}</div>
+            <div style={{ fontSize: 10, color: step >= s.n ? '#5A6060' : '#8A9090', whiteSpace: 'nowrap', fontFamily: 'Poppins' }}>{s.label}</div>
           </div>
           {i < steps.length - 1 && (
             <div style={{
               height: 2, width: 60, margin: '0 6px', marginBottom: 18,
               background: step > s.n
-                ? 'linear-gradient(90deg, #2563EB, #06B6D4)'
-                : 'rgba(255,255,255,0.06)',
+                ? '#287C78'
+                : 'rgba(32,36,33,0.1)',
               transition: 'background 0.4s',
             }} />
           )}
@@ -71,7 +72,7 @@ export default function SignupPage() {
   const [error,    setError]    = useState('');
   const [faceDone, setFaceDone] = useState(false);       // face registration completed
 
-  // ── Step 1: validate form → open face modal ────────────────────────────
+  // â”€â”€ Step 1: validate form â†’ open face modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -93,7 +94,7 @@ export default function SignupPage() {
     setStep(2); // open face registration modal
   };
 
-  // ── Step 2: face registration complete → create account ───────────────
+  // â”€â”€ Step 2: face registration complete â†’ create account â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   const handleFaceSuccess = async () => {
     setFaceDone(true);
@@ -113,40 +114,75 @@ export default function SignupPage() {
     setStep(1); // return to form without creating account
   };
 
-  // ── Render ─────────────────────────────────────────────────────────────
+  // â”€â”€ Render â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
   return (
     <>
       <div style={{
-        minHeight: '100vh', background: '#0F172A',
+        minHeight: '100vh', background: '#F7F6F2',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        position: 'relative', overflow: 'hidden', padding: '40px 24px',
+        position: 'relative', overflow: 'hidden',
       }}>
-        <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
-        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: 600, height: 600, background: 'radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%)', borderRadius: '50%' }} />
+        <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
+
+        {/* Left accent panel */}
+        <div style={{
+          position: 'absolute', left: 0, top: 0, bottom: 0, width: '42%',
+          background: '#202421',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          padding: 48,
+        }}>
+          <div style={{ textAlign: 'center', maxWidth: 320 }}>
+            <div style={{
+              width: 72, height: 72,
+              background: '#287C78',
+              borderRadius: 18,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '0 auto 24px',
+            }}>
+              <Shield size={34} color="white" />
+            </div>
+            <h2 style={{ fontSize: 26, fontWeight: 700, color: '#FFFFFF', fontFamily: 'Poppins', marginBottom: 12 }}>
+              TVDS
+            </h2>
+            <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', fontFamily: 'Poppins', lineHeight: 1.7 }}>
+              AI-Powered Traffic Violation Detection System for Traffic Enforcement Officers
+            </p>
+            <div style={{ marginTop: 40, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { icon: 'ðŸ”', text: 'AI-powered violation detection' },
+                { icon: 'ðŸ“‹', text: 'Centralized records management' },
+                { icon: 'ðŸ“Š', text: 'Real-time analytics dashboard' },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', background: 'rgba(32,36,33,0.05)', borderRadius: 10 }}>
+                  <span style={{ fontSize: 18 }}>{item.icon}</span>
+                  <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', fontFamily: 'Poppins' }}>{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
 
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          style={{ width: '100%', maxWidth: 560, position: 'relative', zIndex: 1 }}
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.45 }}
+          style={{
+            width: '100%', maxWidth: 560,
+            marginLeft: '42%',
+            padding: '40px 52px',
+            position: 'relative', zIndex: 1,
+            maxHeight: '100vh',
+            overflowY: 'auto'
+          }}
         >
           {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: 24 }}>
-            <div style={{
-              width: 60, height: 60,
-              background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
-              borderRadius: 16,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 14px',
-              boxShadow: '0 10px 30px rgba(37,99,235,0.4)',
-            }}>
-              <Shield size={26} color="white" />
-            </div>
-            <h1 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 6 }}>
+          <div style={{ marginBottom: 24 }}>
+            <h1 style={{ fontSize: 26, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 6 }}>
               Officer Registration
             </h1>
-            <p style={{ fontSize: 13.5, color: '#64748B' }}>Create your TVDS officer account</p>
+            <p style={{ fontSize: 13.5, color: '#8A9090', fontFamily: 'Poppins' }}>Create your TVDS officer account</p>
           </div>
 
           {/* Step indicator */}
@@ -154,13 +190,13 @@ export default function SignupPage() {
 
           {/* Card */}
           <div style={{
-            background: 'rgba(255,255,255,0.03)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: 24, padding: '32px',
-            backdropFilter: 'blur(20px)',
+            background: '#FFFFFF',
+            border: '1px solid rgba(32,36,33,0.1)',
+            borderRadius: 16, padding: '28px',
+            boxShadow: '0 2px 12px rgba(32,36,33,0.07)',
           }}>
             <AnimatePresence mode="wait">
-              {/* ─ Step 1: Form ─ */}
+              {/* â”€ Step 1: Form â”€ */}
               {step === 1 && !loading && (
                 <motion.form
                   key="form"
@@ -173,8 +209,8 @@ export default function SignupPage() {
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                     {fields.map(f => (
                       <div key={f.key} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        <label style={{ fontSize: 12, color: '#94A3B8', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 5 }}>
-                          <f.icon size={12} /> {f.label}
+                        <label style={{ fontSize: 12, color: '#5A6060', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 5, fontFamily: 'Poppins' }}>
+                          <f.icon size={12} color="#287C78" /> {f.label}
                         </label>
                         {f.type === 'select' ? (
                           <select
@@ -182,7 +218,7 @@ export default function SignupPage() {
                             value={form[f.key] || ''}
                             onChange={e => setForm({ ...form, [f.key]: e.target.value })}
                             required
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: 'pointer', fontFamily: 'Poppins', backgroundColor: '#FFFFFF', borderColor: 'rgba(32,36,33,0.2)' }}
                           >
                             <option value="">Select...</option>
                             {f.options.map(o => <option key={o}>{o}</option>)}
@@ -195,6 +231,7 @@ export default function SignupPage() {
                             value={form[f.key] || ''}
                             onChange={e => setForm({ ...form, [f.key]: e.target.value })}
                             required
+                            style={{ fontFamily: 'Poppins', backgroundColor: '#FFFFFF', borderColor: 'rgba(32,36,33,0.2)' }}
                           />
                         )}
                       </div>
@@ -204,7 +241,7 @@ export default function SignupPage() {
                   {/* Password row */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
                     <div>
-                      <label style={{ fontSize: 12, color: '#94A3B8', fontWeight: 500, marginBottom: 6, display: 'block' }}>Password</label>
+                      <label style={{ fontSize: 12, color: '#5A6060', fontWeight: 500, marginBottom: 6, display: 'block', fontFamily: 'Poppins' }}>Password</label>
                       <div style={{ position: 'relative' }}>
                         <input
                           className="input-field"
@@ -212,20 +249,20 @@ export default function SignupPage() {
                           placeholder="Min. 6 characters"
                           value={form.password || ''}
                           onChange={e => setForm({ ...form, password: e.target.value })}
-                          style={{ paddingRight: 40 }}
+                          style={{ paddingRight: 40, fontFamily: 'Poppins', backgroundColor: '#FFFFFF', borderColor: 'rgba(32,36,33,0.2)' }}
                           required
                         />
                         <button
                           type="button"
                           onClick={() => setShowPass(!showPass)}
-                          style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#64748B' }}
+                          style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', color: '#8A9090' }}
                         >
                           {showPass ? <EyeOff size={15} /> : <Eye size={15} />}
                         </button>
                       </div>
                     </div>
                     <div>
-                      <label style={{ fontSize: 12, color: '#94A3B8', fontWeight: 500, marginBottom: 6, display: 'block' }}>Confirm Password</label>
+                      <label style={{ fontSize: 12, color: '#5A6060', fontWeight: 500, marginBottom: 6, display: 'block', fontFamily: 'Poppins' }}>Confirm Password</label>
                       <input
                         className="input-field"
                         type="password"
@@ -233,17 +270,18 @@ export default function SignupPage() {
                         value={form.confirmPassword || ''}
                         onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
                         required
+                        style={{ fontFamily: 'Poppins', backgroundColor: '#FFFFFF', borderColor: 'rgba(32,36,33,0.2)' }}
                       />
                     </div>
                   </div>
 
                   {/* Match indicator */}
                   {form.password && form.confirmPassword && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontFamily: 'Poppins' }}>
                       {form.password === form.confirmPassword ? (
-                        <><CheckCircle size={13} color="#22C55E" /><span style={{ color: '#22C55E' }}>Passwords match</span></>
+                        <><CheckCircle size={13} color="#287C78" /><span style={{ color: '#287C78' }}>Passwords match</span></>
                       ) : (
-                        <><AlertCircle size={13} color="#EF4444" /><span style={{ color: '#EF4444' }}>Passwords do not match</span></>
+                        <><AlertCircle size={13} color="#C94C4C" /><span style={{ color: '#C94C4C' }}>Passwords do not match</span></>
                       )}
                     </div>
                   )}
@@ -253,12 +291,12 @@ export default function SignupPage() {
                       initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
                       style={{
                         display: 'flex', alignItems: 'center', gap: 8,
-                        background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
+                        background: 'rgba(201,76,76,0.1)', border: '1px solid rgba(201,76,76,0.25)',
                         borderRadius: 10, padding: '10px 14px',
                       }}
                     >
-                      <AlertCircle size={14} color="#EF4444" />
-                      <span style={{ fontSize: 13, color: '#EF4444' }}>{error}</span>
+                      <AlertCircle size={14} color="#C94C4C" />
+                      <span style={{ fontSize: 13, color: '#C94C4C', fontFamily: 'Poppins' }}>{error}</span>
                     </motion.div>
                   )}
 
@@ -266,13 +304,13 @@ export default function SignupPage() {
                   <div style={{
                     display: 'flex', alignItems: 'center', gap: 10,
                     padding: '12px 16px',
-                    background: 'rgba(6,182,212,0.06)',
-                    border: '1px solid rgba(6,182,212,0.18)',
+                    background: 'rgba(40,124,120,0.08)',
+                    border: '1px solid rgba(40,124,120,0.2)',
                     borderRadius: 12,
                   }}>
-                    <Scan size={18} color="#06B6D4" style={{ minWidth: 18 }} />
-                    <div style={{ fontSize: 12.5, color: '#94A3B8', lineHeight: 1.5 }}>
-                      After submitting, <strong style={{ color: '#06B6D4' }}>biometric face registration</strong> will be required
+                    <Scan size={18} color="#287C78" style={{ minWidth: 18 }} />
+                    <div style={{ fontSize: 12.5, color: '#5A6060', lineHeight: 1.5, fontFamily: 'Poppins' }}>
+                      After submitting, <strong style={{ color: '#287C78' }}>biometric face registration</strong> will be required
                       as a second security layer. Please ensure your webcam is accessible.
                     </div>
                   </div>
@@ -282,14 +320,14 @@ export default function SignupPage() {
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.98 }}
                     className="btn-primary"
-                    style={{ padding: '13px 24px', justifyContent: 'center', fontSize: 14.5, marginTop: 4 }}
+                    style={{ padding: '13px 24px', justifyContent: 'center', fontSize: 14.5, marginTop: 4, fontFamily: 'Poppins' }}
                   >
-                    <Scan size={16} /> Continue to Face Registration →
+                    <Scan size={16} /> Continue to Face Registration â†’
                   </motion.button>
                 </motion.form>
               )}
 
-              {/* ─ Loading state (creating account after face) ─ */}
+              {/* â”€ Loading state (creating account after face) â”€ */}
               {loading && (
                 <motion.div
                   key="creating"
@@ -302,33 +340,33 @@ export default function SignupPage() {
                     transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
                     style={{
                       width: 44, height: 44,
-                      border: '3px solid rgba(37,99,235,0.2)',
-                      borderTopColor: '#2563EB',
+                      border: '3px solid rgba(40,124,120,0.2)',
+                      borderTopColor: '#287C78',
                       borderRadius: '50%', margin: '0 auto 18px',
                     }}
                   />
-                  <div style={{ fontSize: 16, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 6 }}>
-                    Creating Your Account…
+                  <div style={{ fontSize: 16, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 6 }}>
+                    Creating Your Accountâ€¦
                   </div>
-                  <div style={{ fontSize: 13, color: '#64748B' }}>
-                    Face data registered · Setting up officer profile
+                  <div style={{ fontSize: 13, color: '#5A6060', fontFamily: 'Poppins' }}>
+                    Face data registered Â· Setting up officer profile
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13.5, color: '#64748B' }}>
+          <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13.5, color: '#8A9090', fontFamily: 'Poppins' }}>
             Already registered?{' '}
-            <Link to="/login" style={{ color: '#2563EB', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
+            <Link to="/login" style={{ color: '#287C78', fontWeight: 600, textDecoration: 'none' }}>Sign in</Link>
           </p>
-          <p style={{ textAlign: 'center', marginTop: 10, fontSize: 13, color: '#475569' }}>
-            <Link to="/" style={{ color: '#475569', textDecoration: 'none' }}>← Back to Home</Link>
+          <p style={{ textAlign: 'center', marginTop: 10, fontSize: 13, color: '#8A9090', fontFamily: 'Poppins' }}>
+            <Link to="/" style={{ color: '#8A9090', textDecoration: 'none' }}>â† Back to Home</Link>
           </p>
         </motion.div>
       </div>
 
-      {/* Face capture modal — rendered outside main layout */}
+      {/* Face capture modal â€” rendered outside main layout */}
       <AnimatePresence>
         {step === 2 && (
           <FaceCaptureModal
@@ -344,3 +382,4 @@ export default function SignupPage() {
     </>
   );
 }
+

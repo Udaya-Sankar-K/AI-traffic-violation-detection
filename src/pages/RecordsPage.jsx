@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+﻿import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Search, ChevronLeft, ChevronRight, AlertCircle, Eye } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
@@ -7,10 +7,10 @@ import { MOCK_VIOLATIONS, SEVERITY_CONFIG, ALL_VIOLATION_TYPE_NAMES, VIOLATION_M
 const ITEMS_PER_PAGE = 6;
 
 const STATUS_STYLES = {
-  Pending: { color: '#F97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.3)' },
-  Confirmed: { color: '#EF4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)' },
-  Resolved: { color: '#22C55E', bg: 'rgba(34,197,94,0.1)', border: 'rgba(34,197,94,0.3)' },
-  'Action Taken': { color: '#06B6D4', bg: 'rgba(6,182,212,0.1)', border: 'rgba(6,182,212,0.3)' },
+  Pending: { color: '#C9824B', bg: 'rgba(201,130,75,0.1)', border: 'rgba(201,130,75,0.25)' },
+  Confirmed: { color: '#C94C4C', bg: 'rgba(201,76,76,0.1)', border: 'rgba(201,76,76,0.25)' },
+  Resolved: { color: '#287C78', bg: 'rgba(40,124,120,0.1)', border: 'rgba(40,124,120,0.25)' },
+  'Action Taken': { color: '#287C78', bg: 'rgba(40,124,120,0.1)', border: 'rgba(40,124,120,0.25)' },
 };
 
 export default function RecordsPage() {
@@ -63,10 +63,10 @@ export default function RecordsPage() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
               Violation Records
             </h2>
-            <p style={{ fontSize: 13, color: '#64748B' }}>
+            <p style={{ fontSize: 13, color: '#8A9090' }}>
               {filtered.length} records found
             </p>
           </div>
@@ -74,12 +74,12 @@ export default function RecordsPage() {
             {['Total', 'Pending', 'Confirmed', 'Resolved'].map((s, i) => (
               <div key={s} style={{
                 padding: '6px 14px',
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: '#FFFFFF',
+                border: '1px solid rgba(32,36,33,0.1)',
                 borderRadius: 10,
-                color: '#94A3B8',
+                color: '#5A6060',
               }}>
-                <span style={{ color: '#F8FAFC', fontWeight: 700 }}>
+                <span style={{ color: '#202421', fontWeight: 700 }}>
                   {i === 0 ? MOCK_VIOLATIONS.length : MOCK_VIOLATIONS.filter(v => v.status === s).length}
                 </span> {s}
               </div>
@@ -92,10 +92,10 @@ export default function RecordsPage() {
       <div style={{ display: 'flex', gap: 10, marginBottom: 16, flexWrap: 'wrap' }}>
         {/* Search */}
         <div style={{ flex: '1 1 220px', position: 'relative' }}>
-          <Search size={14} style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: '#64748B' }} />
+          <Search size={14} style={{ position: 'absolute', left: 13, top: '50%', transform: 'translateY(-50%)', color: '#8A9090' }} />
           <input
             className="input-field"
-            placeholder="Search by ID, type, officer, plate, location…"
+            placeholder="Search by ID, type, officer, plate, locationâ€¦"
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
             style={{ paddingLeft: 38 }}
@@ -148,21 +148,21 @@ export default function RecordsPage() {
       {(filterType !== 'All' || filterSeverity !== 'All' || filterStatus !== 'All') && (
         <div style={{ display: 'flex', gap: 8, marginBottom: 14, flexWrap: 'wrap' }}>
           {filterType !== 'All' && (
-            <span style={{ padding: '4px 12px', background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.3)', borderRadius: 20, fontSize: 12, color: '#93C5FD', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ padding: '4px 12px', background: 'rgba(40,124,120,0.08)', border: '1px solid rgba(40,124,120,0.2)', borderRadius: 20, fontSize: 12, color: '#287C78', display: 'flex', alignItems: 'center', gap: 5 }}>
               {VIOLATION_META[filterType]?.icon} {filterType}
-              <button onClick={() => setFilterType('All')} style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+              <button onClick={() => setFilterType('All')} style={{ background: 'none', border: 'none', color: '#8A9090', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>Ã—</button>
             </span>
           )}
           {filterSeverity !== 'All' && (
-            <span style={{ padding: '4px 12px', background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.25)', borderRadius: 20, fontSize: 12, color: '#FCA5A5', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ padding: '4px 12px', background: 'rgba(201,76,76,0.1)', border: '1px solid rgba(201,76,76,0.25)', borderRadius: 20, fontSize: 12, color: '#C94C4C', display: 'flex', alignItems: 'center', gap: 5 }}>
               Severity: {filterSeverity}
-              <button onClick={() => setFilterSeverity('All')} style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+              <button onClick={() => setFilterSeverity('All')} style={{ background: 'none', border: 'none', color: '#8A9090', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>Ã—</button>
             </span>
           )}
           {filterStatus !== 'All' && (
-            <span style={{ padding: '4px 12px', background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.2)', borderRadius: 20, fontSize: 12, color: '#67E8F9', display: 'flex', alignItems: 'center', gap: 5 }}>
+            <span style={{ padding: '4px 12px', background: 'rgba(40,124,120,0.08)', border: '1px solid rgba(40,124,120,0.2)', borderRadius: 20, fontSize: 12, color: '#287C78', display: 'flex', alignItems: 'center', gap: 5 }}>
               Status: {filterStatus}
-              <button onClick={() => setFilterStatus('All')} style={{ background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>×</button>
+              <button onClick={() => setFilterStatus('All')} style={{ background: 'none', border: 'none', color: '#8A9090', cursor: 'pointer', padding: 0, fontSize: 14, lineHeight: 1 }}>Ã—</button>
             </span>
           )}
         </div>
@@ -192,7 +192,7 @@ export default function RecordsPage() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                       {col.label}
                       {sortBy === col.key && (
-                        <span style={{ color: '#2563EB' }}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+                        <span style={{ color: '#287C78' }}>{sortDir === 'asc' ? 'â†‘' : 'â†“'}</span>
                       )}
                     </div>
                   </th>
@@ -211,49 +211,49 @@ export default function RecordsPage() {
                     transition={{ delay: i * 0.04 }}
                   >
                     <td>
-                      <div style={{ fontFamily: 'monospace', fontSize: 12, color: '#06B6D4' }}>{v.id}</div>
+                      <div style={{ fontFamily: 'monospace', fontSize: 12, color: '#287C78' }}>{v.id}</div>
                       {v.repeatOffender && (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 10, color: '#EF4444' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 3, fontSize: 10, color: '#C94C4C' }}>
                           <AlertCircle size={9} /> Repeat Offender
                         </div>
                       )}
                     </td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontSize: 15 }}>{VIOLATION_META[v.type]?.icon ?? '⚠️'}</span>
+                        <span style={{ fontSize: 15 }}>{VIOLATION_META[v.type]?.icon ?? 'âš ï¸'}</span>
                         <div>
-                          <div style={{ fontSize: 12.5, color: '#F8FAFC', fontWeight: 600 }}>{v.type}</div>
+                          <div style={{ fontSize: 12.5, color: '#202421', fontWeight: 600 }}>{v.type}</div>
                           {v.subViolations?.length > 0 && (
                             <div style={{ display: 'flex', gap: 4, marginTop: 3, flexWrap: 'wrap' }}>
                               {v.subViolations.slice(0, 2).map(sv => (
-                                <span key={sv} style={{ fontSize: 9.5, padding: '1px 6px', background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: 8, color: '#FCA5A5' }}>{sv}</span>
+                                <span key={sv} style={{ fontSize: 9.5, padding: '1px 6px', background: 'rgba(201,76,76,0.1)', border: '1px solid rgba(201,76,76,0.25)', borderRadius: 8, color: '#C94C4C' }}>{sv}</span>
                               ))}
-                              {v.subViolations.length > 2 && <span style={{ fontSize: 9.5, color: '#64748B' }}>+{v.subViolations.length - 2}</span>}
+                              {v.subViolations.length > 2 && <span style={{ fontSize: 9.5, color: '#8A9090' }}>+{v.subViolations.length - 2}</span>}
                             </div>
                           )}
                         </div>
                       </div>
                     </td>
                     <td>
-                      <span className={`badge ${v.severity === 'Critical' ? 'badge-critical' : v.severity === 'High' ? 'badge-red' : v.severity === 'Medium' ? 'badge-orange' : 'badge-green'}`}>
+                      <span className={`badge ${v.severity === 'Critical' ? 'badge-red' : v.severity === 'High' ? 'badge-red' : v.severity === 'Medium' ? 'badge-orange' : 'badge-green'}`}>
                         {v.severity}
                       </span>
                     </td>
                     <td style={{ fontSize: 12 }}>
-                      <div style={{ color: '#F8FAFC' }}>{new Date(v.timestamp).toLocaleDateString('en-IN')}</div>
-                      <div style={{ color: '#64748B' }}>{new Date(v.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
+                      <div style={{ color: '#202421' }}>{new Date(v.timestamp).toLocaleDateString('en-IN')}</div>
+                      <div style={{ color: '#8A9090' }}>{new Date(v.timestamp).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</div>
                     </td>
                     <td>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <div className="progress-bar" style={{ width: 60 }}>
                           <div className="progress-fill" style={{ width: `${v.confidence}%` }} />
                         </div>
-                        <span style={{ fontSize: 12, color: '#22C55E', fontWeight: 600 }}>{v.confidence}%</span>
+                        <span style={{ fontSize: 12, color: '#287C78', fontWeight: 600 }}>{v.confidence}%</span>
                       </div>
                     </td>
                     <td>
-                      <div style={{ fontSize: 12.5, color: '#F8FAFC' }}>{v.officerName}</div>
-                      <div style={{ fontSize: 10.5, color: '#64748B' }}>{v.officerId}</div>
+                      <div style={{ fontSize: 12.5, color: '#202421' }}>{v.officerName}</div>
+                      <div style={{ fontSize: 10.5, color: '#8A9090' }}>{v.officerId}</div>
                     </td>
                     <td>
                       <span style={{
@@ -266,7 +266,7 @@ export default function RecordsPage() {
                       </span>
                     </td>
                     <td>
-                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748B', padding: '4px 8px' }}>
+                      <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#8A9090', padding: '4px 8px' }}>
                         <Eye size={15} />
                       </button>
                     </td>
@@ -280,20 +280,20 @@ export default function RecordsPage() {
         {/* Pagination */}
         <div style={{
           padding: '16px 24px',
-          borderTop: '1px solid rgba(255,255,255,0.06)',
+          borderTop: '1px solid rgba(32,36,33,0.1)',
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         }}>
-          <div style={{ fontSize: 12, color: '#64748B' }}>
-            Showing {(page - 1) * ITEMS_PER_PAGE + 1}–{Math.min(page * ITEMS_PER_PAGE, filtered.length)} of {filtered.length} records
+          <div style={{ fontSize: 12, color: '#8A9090' }}>
+            Showing {(page - 1) * ITEMS_PER_PAGE + 1}â€“{Math.min(page * ITEMS_PER_PAGE, filtered.length)} of {filtered.length} records
           </div>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
               style={{
-                width: 32, height: 32, background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8,
-                cursor: page === 1 ? 'not-allowed' : 'pointer', color: '#64748B',
+                width: 32, height: 32, background: '#FFFFFF',
+                border: '1px solid rgba(32,36,33,0.1)', borderRadius: 8,
+                cursor: page === 1 ? 'not-allowed' : 'pointer', color: '#8A9090',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 opacity: page === 1 ? 0.4 : 1,
               }}
@@ -306,11 +306,11 @@ export default function RecordsPage() {
                 onClick={() => setPage(i + 1)}
                 style={{
                   width: 32, height: 32,
-                  background: page === i + 1 ? '#2563EB' : 'rgba(255,255,255,0.04)',
-                  border: `1px solid ${page === i + 1 ? '#2563EB' : 'rgba(255,255,255,0.1)'}`,
+                  background: page === i + 1 ? '#287C78' : '#FFFFFF',
+                  border: `1px solid ${page === i + 1 ? '#287C78' : 'rgba(32,36,33,0.1)'}`,
                   borderRadius: 8, cursor: 'pointer',
                   fontSize: 13, fontWeight: 600,
-                  color: page === i + 1 ? 'white' : '#64748B',
+                  color: page === i + 1 ? '#FFFFFF' : '#8A9090',
                 }}
               >
                 {i + 1}
@@ -320,9 +320,9 @@ export default function RecordsPage() {
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
               style={{
-                width: 32, height: 32, background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8,
-                cursor: page === totalPages ? 'not-allowed' : 'pointer', color: '#64748B',
+                width: 32, height: 32, background: '#FFFFFF',
+                border: '1px solid rgba(32,36,33,0.1)', borderRadius: 8,
+                cursor: page === totalPages ? 'not-allowed' : 'pointer', color: '#8A9090',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 opacity: page === totalPages ? 0.4 : 1,
               }}
@@ -335,3 +335,5 @@ export default function RecordsPage() {
     </AppLayout>
   );
 }
+
+

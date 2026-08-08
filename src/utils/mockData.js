@@ -1,15 +1,15 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// VIOLATION DEFINITIONS — Single source of truth for all violation metadata
+﻿// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// VIOLATION DEFINITIONS â€” Single source of truth for all violation metadata
 // To add a new violation: add an entry here and the entire app updates automatically
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const ALL_VIOLATION_TYPES = [
   {
     type: 'Helmetless Riding',
     severity: 'Medium',
     vehicleType: 'Two-Wheeler',
-    icon: '🪖',
-    color: '#F97316',
+    icon: 'ðŸª–',
+    color: '#C9824B',
     description: 'Rider or pillion not wearing a helmet',
     modelClass: 'no_helmet',          // YOLO/Roboflow class name
     modelSupported: true,
@@ -18,8 +18,8 @@ export const ALL_VIOLATION_TYPES = [
     type: 'Signal Jumping',
     severity: 'High',
     vehicleType: 'Car',
-    icon: '🚦',
-    color: '#EF4444',
+    icon: 'ðŸš¦',
+    color: '#C94C4C',
     description: 'Vehicle crossing red-light signal',
     modelClass: 'signal_jump',
     modelSupported: true,
@@ -28,8 +28,8 @@ export const ALL_VIOLATION_TYPES = [
     type: 'Illegal Parking',
     severity: 'Medium',
     vehicleType: 'SUV',
-    icon: '🅿️',
-    color: '#06B6D4',
+    icon: 'ðŸ…¿ï¸',
+    color: '#287C78',
     description: 'Vehicle parked in a restricted/unauthorized zone',
     modelClass: 'illegal_parking',
     modelSupported: true,
@@ -38,29 +38,29 @@ export const ALL_VIOLATION_TYPES = [
     type: 'No-Parking Zone Violation',
     severity: 'Medium',
     vehicleType: 'Car',
-    icon: '🚫',
-    color: '#8B5CF6',
+    icon: 'ðŸš«',
+    color: '#287C78',
     description: 'Vehicle parked inside a designated no-parking area',
     modelClass: 'no_parking_zone',
     modelSupported: false,            // Set true when YOLO model class is trained
-    modelNote: 'Requires YOLO model class "no_parking_zone" — see SETUP.md §AI',
+    modelNote: 'Requires YOLO model class "no_parking_zone" â€” see SETUP.md Â§AI',
   },
   {
     type: 'Zebra-Crossing Violation',
     severity: 'High',
     vehicleType: 'Car',
-    icon: '🦓',
-    color: '#F59E0B',
+    icon: 'ðŸ¦“',
+    color: '#C9824B',
     description: 'Vehicle stopped on or obstructing pedestrian zebra crossing',
     modelClass: 'zebra_crossing_block',
     modelSupported: false,
-    modelNote: 'Requires YOLO model class "zebra_crossing_block" — see SETUP.md §AI',
+    modelNote: 'Requires YOLO model class "zebra_crossing_block" â€” see SETUP.md Â§AI',
   },
   {
     type: 'Wrong-Way Driving',
     severity: 'High',
     vehicleType: 'Motorcycle',
-    icon: '⬅️',
+    icon: 'â¬…ï¸',
     color: '#DC2626',
     description: 'Vehicle travelling against designated traffic direction',
     modelClass: 'wrong_way',
@@ -70,19 +70,19 @@ export const ALL_VIOLATION_TYPES = [
     type: 'Triple Riding',
     severity: 'Medium',
     vehicleType: 'Two-Wheeler',
-    icon: '👥',
+    icon: 'ðŸ‘¥',
     color: '#10B981',
     description: 'Motorcycle carrying more than two riders',
     modelClass: 'triple_riding',
     modelSupported: false,
-    modelNote: 'Requires YOLO model class "triple_riding" — see SETUP.md §AI',
+    modelNote: 'Requires YOLO model class "triple_riding" â€” see SETUP.md Â§AI',
   },
   {
     type: 'Multiple Violations',
     severity: 'Critical',
     vehicleType: 'Truck',
-    icon: '⚠️',
-    color: '#EF4444',
+    icon: 'âš ï¸',
+    color: '#C94C4C',
     description: 'Multiple simultaneous violations detected',
     modelClass: 'multiple',
     modelSupported: true,
@@ -107,9 +107,9 @@ export function computeOverallSeverity(violationTypes) {
   return ['Low', 'Medium', 'High', 'Critical'][max];
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// MOCK VIOLATION RECORDS — Updated with all 8 violation types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// MOCK VIOLATION RECORDS â€” Updated with all 8 violation types
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const MOCK_VIOLATIONS = [
   {
@@ -303,9 +303,9 @@ export const MOCK_VIOLATIONS = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CHARTS & TREND DATA — Updated with 4 new violation categories
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// CHARTS & TREND DATA â€” Updated with 4 new violation categories
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const MOCK_DAILY_TREND = [
   { day: 'Mon', violations: 38, helmets: 10, signals: 7,  parking: 5, noParking: 4, zebra: 3, wrongWay: 5, triple: 4 },
@@ -329,19 +329,19 @@ export const MOCK_MONTHLY_TREND = [
 ];
 
 export const MOCK_CATEGORY_DATA = [
-  { name: 'Helmetless Riding',       value: 28, color: '#F97316' },
-  { name: 'Signal Jumping',          value: 22, color: '#EF4444' },
-  { name: 'Illegal Parking',         value: 14, color: '#06B6D4' },
-  { name: 'No-Parking Zone',         value: 12, color: '#8B5CF6' },
-  { name: 'Zebra Crossing',          value: 10, color: '#F59E0B' },
+  { name: 'Helmetless Riding',       value: 28, color: '#C9824B' },
+  { name: 'Signal Jumping',          value: 22, color: '#C94C4C' },
+  { name: 'Illegal Parking',         value: 14, color: '#287C78' },
+  { name: 'No-Parking Zone',         value: 12, color: '#287C78' },
+  { name: 'Zebra Crossing',          value: 10, color: '#C9824B' },
   { name: 'Wrong-Way Driving',       value: 8,  color: '#DC2626' },
   { name: 'Triple Riding',           value: 4,  color: '#10B981' },
   { name: 'Multiple Violations',     value: 2,  color: '#64748B' },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// HOTSPOTS — Updated with violation type breakdown
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// HOTSPOTS â€” Updated with violation type breakdown
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const MOCK_HOTSPOTS = [
   { location: 'MG Road Junction',     count: 142, risk: 'Critical', topViolation: 'Signal Jumping' },
@@ -354,9 +354,9 @@ export const MOCK_HOTSPOTS = [
   { location: 'Indiranagar 100ft',     count: 38,  risk: 'Low',     topViolation: 'Illegal Parking' },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// ALERTS — Updated with new violation categories
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ALERTS â€” Updated with new violation categories
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const MOCK_ALERTS = [
   {
@@ -386,16 +386,16 @@ export const MOCK_ALERTS = [
   {
     id: 'ALT-004',
     type: 'SPIKE',
-    title: 'Triple Riding Spike — Weekend',
+    title: 'Triple Riding Spike â€” Weekend',
     message: 'Saturday triple riding violations up 55% vs last weekend. Whitefield area.',
     time: '1 hr ago',
     isRead: true,
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // OFFICER DATA
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const MOCK_OFFICER = {
   uid: 'demo-uid',
@@ -413,9 +413,9 @@ export const MOCK_OFFICER = {
   badge: 'KA/SI/2019/0821',
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// AI RECOMMENDATIONS — Extended for all 8 violation types
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// AI RECOMMENDATIONS â€” Extended for all 8 violation types
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const RECOMMENDATIONS = {
   'Helmetless Riding': {
@@ -460,13 +460,14 @@ export const RECOMMENDATIONS = {
   },
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SEVERITY CONFIG — Unchanged, kept for backward compatibility
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// SEVERITY CONFIG â€” Unchanged, kept for backward compatibility
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export const SEVERITY_CONFIG = {
-  Low:      { color: '#22C55E', bg: 'rgba(34,197,94,0.1)',   border: 'rgba(34,197,94,0.3)',   label: 'LOW',      badge: 'badge-green'    },
-  Medium:   { color: '#F97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.3)', label: 'MEDIUM',   badge: 'badge-orange'   },
-  High:     { color: '#EF4444', bg: 'rgba(239,68,68,0.1)',  border: 'rgba(239,68,68,0.3)',  label: 'HIGH',     badge: 'badge-red'      },
-  Critical: { color: '#EF4444', bg: 'rgba(239,68,68,0.15)', border: 'rgba(239,68,68,0.5)',  label: 'CRITICAL', badge: 'badge-critical'  },
+  Low:      { color: '#287C78', bg: 'rgba(40,124,120,0.1)',   border: 'rgba(40,124,120,0.3)',   label: 'LOW',      badge: 'badge-green'    },
+  Medium:   { color: '#C9824B', bg: 'rgba(201,130,75,0.1)', border: 'rgba(201,130,75,0.3)', label: 'MEDIUM',   badge: 'badge-orange'   },
+  High:     { color: '#C94C4C', bg: 'rgba(201,76,76,0.1)',  border: 'rgba(201,76,76,0.3)',  label: 'HIGH',     badge: 'badge-red'      },
+  Critical: { color: '#C94C4C', bg: 'rgba(201,76,76,0.15)', border: 'rgba(201,76,76,0.5)',  label: 'CRITICAL', badge: 'badge-critical'  },
 };
+

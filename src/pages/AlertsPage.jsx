@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { motion } from 'framer-motion';
 import { Bell, AlertTriangle, AlertCircle, TrendingUp, X, Check } from 'lucide-react';
 import AppLayout from '../components/layout/AppLayout';
@@ -33,10 +33,10 @@ const ALL_ALERTS = [
 ];
 
 const TYPE_CONFIG = {
-  CRITICAL: { color: '#EF4444', bg: 'rgba(239,68,68,0.1)', border: 'rgba(239,68,68,0.3)', label: '🔴 CRITICAL', icon: AlertTriangle },
-  REPEAT_OFFENDER: { color: '#F97316', bg: 'rgba(249,115,22,0.1)', border: 'rgba(249,115,22,0.3)', label: '⚠ REPEAT OFFENDER', icon: AlertCircle },
-  HIGH: { color: '#F59E0B', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.25)', label: '🟡 HIGH', icon: Bell },
-  SPIKE: { color: '#8B5CF6', bg: 'rgba(139,92,246,0.08)', border: 'rgba(139,92,246,0.25)', label: '📈 SPIKE', icon: TrendingUp },
+  CRITICAL: { color: '#C94C4C', bg: 'rgba(201,76,76,0.1)', border: 'rgba(201,76,76,0.25)', label: 'ðŸ”´ CRITICAL', icon: AlertTriangle },
+  REPEAT_OFFENDER: { color: '#C9824B', bg: 'rgba(201,130,75,0.1)', border: 'rgba(201,130,75,0.25)', label: 'âš  REPEAT OFFENDER', icon: AlertCircle },
+  HIGH: { color: '#C9824B', bg: 'rgba(201,130,75,0.1)', border: 'rgba(201,130,75,0.25)', label: 'ðŸŸ¡ HIGH', icon: Bell },
+  SPIKE: { color: '#287C78', bg: 'rgba(40,124,120,0.08)', border: 'rgba(40,124,120,0.2)', label: 'ðŸ“ˆ SPIKE', icon: TrendingUp },
 };
 
 export default function AlertsPage() {
@@ -47,10 +47,10 @@ export default function AlertsPage() {
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+            <h2 style={{ fontSize: 24, fontWeight: 800, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
               Smart Alerts
             </h2>
-            <p style={{ fontSize: 13, color: '#64748B' }}>
+            <p style={{ fontSize: 13, color: '#8A9090' }}>
               {unread} unread alerts requiring attention
             </p>
           </div>
@@ -63,16 +63,16 @@ export default function AlertsPage() {
       {/* Summary row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 24 }}>
         {[
-          { label: 'Critical', count: ALL_ALERTS.filter(a => a.type === 'CRITICAL').length, color: '#EF4444' },
-          { label: 'Repeat Offenders', count: ALL_ALERTS.filter(a => a.type === 'REPEAT_OFFENDER').length, color: '#F97316' },
-          { label: 'High Severity', count: ALL_ALERTS.filter(a => a.type === 'HIGH').length, color: '#F59E0B' },
-          { label: 'Spikes', count: ALL_ALERTS.filter(a => a.type === 'SPIKE').length, color: '#8B5CF6' },
+          { label: 'Critical', count: ALL_ALERTS.filter(a => a.type === 'CRITICAL').length, color: '#C94C4C' },
+          { label: 'Repeat Offenders', count: ALL_ALERTS.filter(a => a.type === 'REPEAT_OFFENDER').length, color: '#C9824B' },
+          { label: 'High Severity', count: ALL_ALERTS.filter(a => a.type === 'HIGH').length, color: '#C9824B' },
+          { label: 'Spikes', count: ALL_ALERTS.filter(a => a.type === 'SPIKE').length, color: '#287C78' },
         ].map(s => (
           <div key={s.label} className="glass-card" style={{ padding: '16px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div style={{ width: 8, height: 8, background: s.color, borderRadius: '50%', boxShadow: `0 0 8px ${s.color}` }} />
+            <div style={{ width: 8, height: 8, background: s.color, borderRadius: '50%', boxShadow: `0 1px 4px rgba(32,36,33,0.08)` }} />
             <div>
               <div style={{ fontSize: 20, fontWeight: 800, color: s.color, fontFamily: 'Poppins' }}>{s.count}</div>
-              <div style={{ fontSize: 11.5, color: '#64748B' }}>{s.label}</div>
+              <div style={{ fontSize: 11.5, color: '#8A9090' }}>{s.label}</div>
             </div>
           </div>
         ))}
@@ -80,9 +80,9 @@ export default function AlertsPage() {
 
       {/* Alerts list */}
       <div className="glass-card" style={{ overflow: 'hidden' }}>
-        <div style={{ padding: '16px 22px', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 10 }}>
-          <Bell size={15} color="#EF4444" />
-          <span style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC' }}>All Alerts</span>
+        <div style={{ padding: '16px 22px', borderBottom: '1px solid rgba(32,36,33,0.1)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <Bell size={15} color="#C94C4C" />
+          <span style={{ fontSize: 14, fontWeight: 700, color: '#202421' }}>All Alerts</span>
         </div>
         <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
           {ALL_ALERTS.map((alert, i) => {
@@ -129,13 +129,13 @@ export default function AlertsPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
                     <span style={{ fontSize: 10, fontWeight: 700, color: conf.color }}>{conf.label}</span>
                   </div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC', marginBottom: 4 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#202421', marginBottom: 4 }}>
                     {alert.title}
                   </div>
-                  <div style={{ fontSize: 12.5, color: '#94A3B8', lineHeight: 1.5 }}>
+                  <div style={{ fontSize: 12.5, color: '#5A6060', lineHeight: 1.5 }}>
                     {alert.message}
                   </div>
-                  <div style={{ fontSize: 11, color: '#64748B', marginTop: 6 }}>{alert.time}</div>
+                  <div style={{ fontSize: 11, color: '#8A9090', marginTop: 6 }}>{alert.time}</div>
                 </div>
               </motion.div>
             );
@@ -145,3 +145,4 @@ export default function AlertsPage() {
     </AppLayout>
   );
 }
+

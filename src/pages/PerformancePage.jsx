@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   TrendingUp, Upload, CheckCircle, Target,
@@ -69,8 +69,8 @@ const RADAR_DATA = [
 const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
     return (
-      <div style={{ background: '#0F172A', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, padding: '10px 14px' }}>
-        <div style={{ fontSize: 12, color: '#94A3B8', marginBottom: 6 }}>{label}</div>
+      <div style={{ background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', borderRadius: 10, padding: '10px 14px', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}>
+        <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 6 }}>{label}</div>
         {payload.map(p => (
           <div key={p.name} style={{ fontSize: 13, color: p.color || p.fill, fontWeight: 600 }}>
             {p.name}: {p.value}
@@ -90,10 +90,10 @@ export default function PerformancePage() {
   return (
     <AppLayout>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
           Officer Performance
         </h2>
-        <p style={{ fontSize: 13, color: '#64748B' }}>Track individual and team performance metrics</p>
+        <p style={{ fontSize: 13, color: '#8A9090' }}>Track individual and team performance metrics</p>
       </motion.div>
 
       {/* My performance banner */}
@@ -101,8 +101,8 @@ export default function PerformancePage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         style={{
-          background: 'linear-gradient(135deg, rgba(37,99,235,0.1), rgba(6,182,212,0.06))',
-          border: '1px solid rgba(37,99,235,0.2)',
+          background: '#287C78',
+          border: '1px solid rgba(40,124,120,0.2)',
           borderRadius: 18, padding: '22px 28px',
           display: 'grid', gridTemplateColumns: 'auto 1fr repeat(4, auto)',
           gap: 28, alignItems: 'center',
@@ -112,29 +112,29 @@ export default function PerformancePage() {
         {/* Avatar */}
         <div style={{
           width: 56, height: 56,
-          background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
+          background: '#FFFFFF',
           borderRadius: '50%',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 20, fontWeight: 700, color: 'white',
+          fontSize: 20, fontWeight: 700, color: '#287C78',
         }}>
           {officer?.fullName?.charAt(0) || 'O'}
         </div>
         <div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins' }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: '#FFFFFF', fontFamily: 'Poppins' }}>
             {officer?.fullName}
           </div>
-          <div style={{ fontSize: 12, color: '#64748B' }}>{officer?.designation} • {officer?.policeId}</div>
+          <div style={{ fontSize: 12, color: '#F7F6F2' }}>{officer?.designation} â€¢ {officer?.policeId}</div>
         </div>
         {[
-          { icon: Upload, label: 'Cases Uploaded', value: officer?.casesUploaded || 168, color: '#2563EB' },
-          { icon: Activity, label: 'Processed', value: officer?.casesProcessed || 145, color: '#06B6D4' },
-          { icon: CheckCircle, label: 'Reviewed', value: officer?.reviewsCompleted || 132, color: '#22C55E' },
-          { icon: Target, label: 'Avg. Accuracy', value: '93.4%', color: '#F97316' },
+          { icon: Upload, label: 'Cases Uploaded', value: officer?.casesUploaded || 168, color: '#FFFFFF' },
+          { icon: Activity, label: 'Processed', value: officer?.casesProcessed || 145, color: '#FFFFFF' },
+          { icon: CheckCircle, label: 'Reviewed', value: officer?.reviewsCompleted || 132, color: '#FFFFFF' },
+          { icon: Target, label: 'Avg. Accuracy', value: '93.4%', color: '#FFFFFF' },
         ].map(m => (
-          <div key={m.label} style={{ textAlign: 'center', padding: '0 16px', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+          <div key={m.label} style={{ textAlign: 'center', padding: '0 16px', borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
             <m.icon size={14} color={m.color} style={{ marginBottom: 4 }} />
             <div style={{ fontSize: 22, fontWeight: 800, color: m.color, fontFamily: 'Poppins' }}>{m.value}</div>
-            <div style={{ fontSize: 11, color: '#64748B' }}>{m.label}</div>
+            <div style={{ fontSize: 11, color: '#F7F6F2' }}>{m.label}</div>
           </div>
         ))}
       </motion.div>
@@ -142,33 +142,33 @@ export default function PerformancePage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
         {/* Weekly performance chart */}
         <div className="glass-card" style={{ padding: 24 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
             Weekly Activity
           </div>
-          <div style={{ fontSize: 12, color: '#64748B', marginBottom: 18 }}>Cases uploaded vs reviewed this week</div>
+          <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 18 }}>Cases uploaded vs reviewed this week</div>
           <ResponsiveContainer width="100%" height={210}>
             <BarChart data={WEEKLY_PERFORMANCE}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
-              <XAxis dataKey="day" tick={{ fill: '#64748B', fontSize: 11 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: '#64748B', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(32,36,33,0.05)" />
+              <XAxis dataKey="day" tick={{ fill: '#8A9090', fontSize: 11 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: '#8A9090', fontSize: 11 }} axisLine={false} tickLine={false} />
               <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="cases" name="Uploaded" fill="#2563EB" radius={[3, 3, 0, 0]} />
-              <Bar dataKey="reviews" name="Reviewed" fill="#22C55E" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="cases" name="Uploaded" fill="#287C78" radius={[3, 3, 0, 0]} />
+              <Bar dataKey="reviews" name="Reviewed" fill="#C9824B" radius={[3, 3, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Radar chart */}
         <div className="glass-card" style={{ padding: 24 }}>
-          <div style={{ fontSize: 15, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+          <div style={{ fontSize: 15, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
             Performance Radar
           </div>
-          <div style={{ fontSize: 12, color: '#64748B', marginBottom: 18 }}>Multi-dimensional performance score</div>
+          <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 18 }}>Multi-dimensional performance score</div>
           <ResponsiveContainer width="100%" height={210}>
             <RadarChart data={RADAR_DATA}>
-              <PolarGrid stroke="rgba(255,255,255,0.08)" />
-              <PolarAngleAxis dataKey="metric" tick={{ fill: '#64748B', fontSize: 10 }} />
-              <Radar name="Performance" dataKey="A" stroke="#2563EB" fill="#2563EB" fillOpacity={0.2} strokeWidth={2} />
+              <PolarGrid stroke="rgba(32,36,33,0.1)" />
+              <PolarAngleAxis dataKey="metric" tick={{ fill: '#8A9090', fontSize: 10 }} />
+              <Radar name="Performance" dataKey="A" stroke="#287C78" fill="#287C78" fillOpacity={0.2} strokeWidth={2} />
             </RadarChart>
           </ResponsiveContainer>
         </div>
@@ -176,10 +176,10 @@ export default function PerformancePage() {
 
       {/* Officer leaderboard */}
       <div className="glass-card" style={{ padding: 24 }}>
-        <div style={{ fontSize: 15, fontWeight: 700, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 6 }}>
-          🏆 Officer Leaderboard
+        <div style={{ fontSize: 15, fontWeight: 700, color: '#202421', fontFamily: 'Poppins', marginBottom: 6 }}>
+          ðŸ† Officer Leaderboard
         </div>
-        <div style={{ fontSize: 12, color: '#64748B', marginBottom: 20 }}>Top performers this month</div>
+        <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 20 }}>Top performers this month</div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
           {OFFICERS.map((off, i) => (
@@ -192,8 +192,8 @@ export default function PerformancePage() {
               whileHover={{ y: -4 }}
               style={{
                 padding: 20,
-                background: selectedOfficer === i ? 'rgba(37,99,235,0.1)' : 'rgba(255,255,255,0.02)',
-                border: `1px solid ${selectedOfficer === i ? 'rgba(37,99,235,0.35)' : 'rgba(255,255,255,0.07)'}`,
+                background: selectedOfficer === i ? 'rgba(40,124,120,0.05)' : '#FFFFFF',
+                border: `1px solid ${selectedOfficer === i ? 'rgba(40,124,120,0.3)' : 'rgba(32,36,33,0.1)'}`,
                 borderRadius: 16,
                 cursor: 'pointer',
                 position: 'relative',
@@ -210,12 +210,12 @@ export default function PerformancePage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 12,
               }}>
-                {i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}
+                {i === 0 ? 'ðŸ¥‡' : i === 1 ? 'ðŸ¥ˆ' : 'ðŸ¥‰'}
               </div>
 
               <div style={{
                 width: 44, height: 44,
-                background: 'linear-gradient(135deg, #2563EB, #06B6D4)',
+                background: '#287C78',
                 borderRadius: '50%',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 16, fontWeight: 700, color: 'white',
@@ -224,23 +224,23 @@ export default function PerformancePage() {
                 {off.name.charAt(0)}
               </div>
 
-              <div style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC', marginBottom: 2 }}>{off.name}</div>
-              <div style={{ fontSize: 11, color: '#64748B', marginBottom: 16 }}>{off.designation} • {off.id}</div>
+              <div style={{ fontSize: 14, fontWeight: 700, color: '#202421', marginBottom: 2 }}>{off.name}</div>
+              <div style={{ fontSize: 11, color: '#8A9090', marginBottom: 16 }}>{off.designation} â€¢ {off.id}</div>
 
               {[
-                ['Uploaded', off.casesUploaded, '#2563EB'],
-                ['Processed', off.casesProcessed, '#06B6D4'],
-                ['Reviewed', off.reviewsCompleted, '#22C55E'],
+                ['Uploaded', off.casesUploaded, '#287C78'],
+                ['Processed', off.casesProcessed, '#287C78'],
+                ['Reviewed', off.reviewsCompleted, '#287C78'],
               ].map(([label, value, color]) => (
                 <div key={label} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, marginBottom: 6 }}>
-                  <span style={{ color: '#64748B' }}>{label}</span>
+                  <span style={{ color: '#5A6060' }}>{label}</span>
                   <span style={{ color, fontWeight: 700 }}>{value}</span>
                 </div>
               ))}
 
-              <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 8 }}>
-                <div style={{ fontSize: 11, color: '#64748B', marginBottom: 2 }}>Avg. Confidence</div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: '#22C55E' }}>{off.avgConfidence}%</div>
+              <div style={{ marginTop: 12, padding: '8px 12px', background: 'rgba(40,124,120,0.08)', border: '1px solid rgba(40,124,120,0.15)', borderRadius: 8 }}>
+                <div style={{ fontSize: 11, color: '#8A9090', marginBottom: 2 }}>Avg. Confidence</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: '#287C78' }}>{off.avgConfidence}%</div>
               </div>
             </motion.div>
           ))}
@@ -249,3 +249,4 @@ export default function PerformancePage() {
     </AppLayout>
   );
 }
+

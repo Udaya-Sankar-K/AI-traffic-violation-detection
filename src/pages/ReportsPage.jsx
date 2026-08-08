@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FileBarChart, Download, Calendar, FileText, Table2, CheckCircle } from 'lucide-react';
 import { jsPDF } from 'jspdf';
@@ -6,9 +6,9 @@ import AppLayout from '../components/layout/AppLayout';
 import { MOCK_VIOLATIONS } from '../utils/mockData';
 
 const REPORT_TYPES = [
-  { id: 'daily', label: 'Daily Report', icon: Calendar, desc: 'Today\'s violation summary', color: '#2563EB' },
-  { id: 'weekly', label: 'Weekly Report', icon: FileText, desc: 'Last 7 days statistics', color: '#06B6D4' },
-  { id: 'monthly', label: 'Monthly Report', icon: Table2, desc: 'Full month analysis', color: '#22C55E' },
+  { id: 'daily', label: 'Daily Report', icon: Calendar, desc: 'Today\'s violation summary', color: '#287C78' },
+  { id: 'weekly', label: 'Weekly Report', icon: FileText, desc: 'Last 7 days statistics', color: '#287C78' },
+  { id: 'monthly', label: 'Monthly Report', icon: Table2, desc: 'Full month analysis', color: '#287C78' },
 ];
 
 export default function ReportsPage() {
@@ -40,7 +40,7 @@ export default function ReportsPage() {
 
       doc.text('Violation Records:', 20, y); y += 10;
       MOCK_VIOLATIONS.slice(0, 8).forEach(v => {
-        doc.text(`• ${v.id} | ${v.type} | ${v.severity} | ${v.confidence}% | ${v.status}`, 25, y);
+        doc.text(`â€¢ ${v.id} | ${v.type} | ${v.severity} | ${v.confidence}% | ${v.status}`, 25, y);
         y += 8;
       });
 
@@ -71,10 +71,10 @@ export default function ReportsPage() {
   return (
     <AppLayout>
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
           Reports
         </h2>
-        <p style={{ fontSize: 13, color: '#64748B' }}>Generate and export violation reports</p>
+        <p style={{ fontSize: 13, color: '#8A9090' }}>Generate and export violation reports</p>
       </motion.div>
 
       {/* Report type selection */}
@@ -88,7 +88,7 @@ export default function ReportsPage() {
             style={{
               padding: '22px 24px',
               background: selected === r.id ? `${r.color}12` : 'rgba(255,255,255,0.02)',
-              border: `1px solid ${selected === r.id ? r.color + '40' : 'rgba(255,255,255,0.08)'}`,
+              border: `1px solid ${selected === r.id ? r.color + '40' : 'rgba(32,36,33,0.1)'}`,
               borderRadius: 16,
               cursor: 'pointer',
               textAlign: 'left',
@@ -105,10 +105,10 @@ export default function ReportsPage() {
             }}>
               <r.icon size={20} color={r.color} />
             </div>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC', marginBottom: 4 }}>{r.label}</div>
-            <div style={{ fontSize: 12, color: '#64748B' }}>{r.desc}</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#202421', marginBottom: 4 }}>{r.label}</div>
+            <div style={{ fontSize: 12, color: '#8A9090' }}>{r.desc}</div>
             {selected === r.id && (
-              <div style={{ marginTop: 10, fontSize: 11, color: r.color, fontWeight: 600 }}>✓ Selected</div>
+              <div style={{ marginTop: 10, fontSize: 11, color: r.color, fontWeight: 600 }}>âœ“ Selected</div>
             )}
           </motion.button>
         ))}
@@ -117,17 +117,17 @@ export default function ReportsPage() {
       {/* Report preview */}
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 20 }}>
         <div className="glass-card" style={{ padding: 24 }}>
-          <div style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC', marginBottom: 18 }}>
-            Report Preview — {REPORT_TYPES.find(r => r.id === selected)?.label}
+          <div style={{ fontSize: 14, fontWeight: 700, color: '#202421', marginBottom: 18 }}>
+            Report Preview â€” {REPORT_TYPES.find(r => r.id === selected)?.label}
           </div>
 
           {/* Preview content */}
-          <div style={{ background: 'rgba(255,255,255,0.02)', borderRadius: 12, padding: 20, border: '1px solid rgba(255,255,255,0.05)' }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: '#F8FAFC', marginBottom: 4, fontFamily: 'Poppins' }}>
+          <div style={{ background: 'rgba(32,36,33,0.02)', borderRadius: 12, padding: 20, border: '1px solid rgba(32,36,33,0.05)' }}>
+            <div style={{ fontSize: 16, fontWeight: 700, color: '#202421', marginBottom: 4, fontFamily: 'Poppins' }}>
               Traffic Violation Detection System
             </div>
-            <div style={{ fontSize: 12, color: '#64748B', marginBottom: 16 }}>
-              {REPORT_TYPES.find(r => r.id === selected)?.label} • Generated {new Date().toLocaleDateString('en-IN')}
+            <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 16 }}>
+              {REPORT_TYPES.find(r => r.id === selected)?.label} â€¢ Generated {new Date().toLocaleDateString('en-IN')}
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 16 }}>
@@ -137,9 +137,9 @@ export default function ReportsPage() {
                 ['Resolved', MOCK_VIOLATIONS.filter(v => v.status === 'Resolved').length],
                 ['Avg. Conf.', '91.4%'],
               ].map(([k, v]) => (
-                <div key={k} style={{ textAlign: 'center', padding: '10px 8px', background: 'rgba(37,99,235,0.08)', borderRadius: 8, border: '1px solid rgba(37,99,235,0.15)' }}>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#2563EB' }}>{v}</div>
-                  <div style={{ fontSize: 10, color: '#64748B', marginTop: 2 }}>{k}</div>
+                <div key={k} style={{ textAlign: 'center', padding: '10px 8px', background: 'rgba(40,124,120,0.08)', borderRadius: 8, border: '1px solid rgba(40,124,120,0.15)' }}>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#287C78' }}>{v}</div>
+                  <div style={{ fontSize: 10, color: '#8A9090', marginTop: 2 }}>{k}</div>
                 </div>
               ))}
             </div>
@@ -149,27 +149,27 @@ export default function ReportsPage() {
               <thead>
                 <tr>
                   {['Record ID', 'Type', 'Severity', 'Conf.', 'Status'].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '6px 8px', color: '#64748B', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>{h}</th>
+                    <th key={h} style={{ textAlign: 'left', padding: '6px 8px', color: '#8A9090', borderBottom: '1px solid rgba(32,36,33,0.1)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {MOCK_VIOLATIONS.slice(0, 5).map(v => (
                   <tr key={v.id}>
-                    <td style={{ padding: '7px 8px', color: '#06B6D4', fontFamily: 'monospace', fontSize: 10 }}>{v.id}</td>
-                    <td style={{ padding: '7px 8px', color: '#F8FAFC' }}>{v.type}</td>
+                    <td style={{ padding: '7px 8px', color: '#287C78', fontFamily: 'monospace', fontSize: 10 }}>{v.id}</td>
+                    <td style={{ padding: '7px 8px', color: '#202421' }}>{v.type}</td>
                     <td style={{ padding: '7px 8px' }}>
-                      <span style={{ fontSize: 9, fontWeight: 700, color: v.severity === 'High' || v.severity === 'Critical' ? '#EF4444' : v.severity === 'Medium' ? '#F97316' : '#22C55E' }}>
+                      <span style={{ fontSize: 9, fontWeight: 700, color: v.severity === 'High' || v.severity === 'Critical' ? '#C94C4C' : v.severity === 'Medium' ? '#C9824B' : '#287C78' }}>
                         {v.severity}
                       </span>
                     </td>
-                    <td style={{ padding: '7px 8px', color: '#22C55E', fontWeight: 600 }}>{v.confidence}%</td>
-                    <td style={{ padding: '7px 8px', color: '#94A3B8' }}>{v.status}</td>
+                    <td style={{ padding: '7px 8px', color: '#287C78', fontWeight: 600 }}>{v.confidence}%</td>
+                    <td style={{ padding: '7px 8px', color: '#5A6060' }}>{v.status}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <div style={{ fontSize: 10, color: '#475569', marginTop: 8 }}>
+            <div style={{ fontSize: 10, color: '#8A9090', marginTop: 8 }}>
               + {MOCK_VIOLATIONS.length - 5} more records in full report
             </div>
           </div>
@@ -178,12 +178,12 @@ export default function ReportsPage() {
         {/* Export panel */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <div className="glass-card" style={{ padding: 22 }}>
-            <div style={{ fontSize: 14, fontWeight: 700, color: '#F8FAFC', marginBottom: 16 }}>Export Report</div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: '#202421', marginBottom: 16 }}>Export Report</div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { format: 'pdf', label: 'Download PDF', icon: FileBarChart, color: '#EF4444', desc: 'Printable, court-ready format' },
-                { format: 'excel', label: 'Download CSV/Excel', icon: Table2, color: '#22C55E', desc: 'Spreadsheet for analysis' },
+                { format: 'pdf', label: 'Download PDF', icon: FileBarChart, color: '#C94C4C', desc: 'Printable, court-ready format' },
+                { format: 'excel', label: 'Download CSV/Excel', icon: Table2, color: '#287C78', desc: 'Spreadsheet for analysis' },
               ].map(opt => (
                 <motion.button
                   key={opt.format}
@@ -202,15 +202,15 @@ export default function ReportsPage() {
                   }}
                 >
                   {generated === opt.format ? (
-                    <CheckCircle size={20} color="#22C55E" />
+                    <CheckCircle size={20} color="#287C78" />
                   ) : (
                     <opt.icon size={20} color={opt.color} />
                   )}
                   <div style={{ textAlign: 'left' }}>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#F8FAFC' }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#202421' }}>
                       {generating ? 'Generating...' : generated === opt.format ? 'Downloaded!' : opt.label}
                     </div>
-                    <div style={{ fontSize: 11, color: '#64748B' }}>{opt.desc}</div>
+                    <div style={{ fontSize: 11, color: '#8A9090' }}>{opt.desc}</div>
                   </div>
                   {!generating && <Download size={14} color={opt.color} style={{ marginLeft: 'auto' }} />}
                 </motion.button>
@@ -220,7 +220,7 @@ export default function ReportsPage() {
 
           {/* Report info */}
           <div className="glass-card" style={{ padding: 20 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#F8FAFC', marginBottom: 12 }}>Report Contents</div>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#202421', marginBottom: 12 }}>Report Contents</div>
             {[
               'Executive Summary',
               'Violation Breakdown by Type',
@@ -230,8 +230,8 @@ export default function ReportsPage() {
               'Full Violation Records',
               'Evidence Authenticity Log',
             ].map(item => (
-              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0', fontSize: 12, color: '#94A3B8' }}>
-                <CheckCircle size={12} color="#22C55E" /> {item}
+              <div key={item} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '5px 0', fontSize: 12, color: '#5A6060' }}>
+                <CheckCircle size={12} color="#287C78" /> {item}
               </div>
             ))}
           </div>
@@ -240,3 +240,4 @@ export default function ReportsPage() {
     </AppLayout>
   );
 }
+

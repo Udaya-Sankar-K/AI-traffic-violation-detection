@@ -189,6 +189,8 @@ export default function FaceCaptureModal({ mode, policeId, onSuccess, onCancel }
       let aligned = false;
       if (!useSimMode) {
         const det = await detectFace(videoRef.current);
+        // Guard: component may have unmounted while awaiting
+        if (!videoRef.current) return;
         aligned = isFaceCentered(det, videoRef.current.videoWidth || 640, videoRef.current.videoHeight || 480);
       }
 

@@ -32,17 +32,17 @@ function AnnotatedImage({ preview, boundingBoxes, violationType }) {
         const w = (box.width / 100) * img.width;
         const h = (box.height / 100) * img.height;
 
-        ctx.strokeStyle = '#EF4444';
+        ctx.strokeStyle = '#C94C4C';
         ctx.lineWidth = 3;
         ctx.strokeRect(x, y, w, h);
 
         // Label background
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.85)';
+        ctx.fillStyle = 'rgba(201, 76, 76, 0.85)';
         ctx.fillRect(x, y - 26, 160, 24);
 
         // Label text
         ctx.fillStyle = 'white';
-        ctx.font = 'bold 12px Inter';
+        ctx.font = 'bold 12px Poppins';
         ctx.fillText(`${violationType} ${(box.confidence * 100).toFixed(1)}%`, x + 6, y - 9);
       });
     };
@@ -58,19 +58,20 @@ function AnnotatedImage({ preview, boundingBoxes, violationType }) {
     return (
       <div style={{
         width: '100%', minHeight: 220,
-        background: 'rgba(255,255,255,0.02)',
+        background: '#FFFFFF',
         borderRadius: 12,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         flexDirection: 'column', gap: 12,
-        border: '1px dashed rgba(255,255,255,0.1)',
+        border: '1px dashed rgba(32,36,33,0.1)',
+        boxShadow: '0 1px 4px rgba(32,36,33,0.08)',
       }}>
-        <Car size={40} color="#475569" />
-        <div style={{ fontSize: 13, color: '#64748B' }}>Video file — frame preview not available</div>
+        <Car size={40} color="#5A6060" />
+        <div style={{ fontSize: 13, color: '#8A9090' }}>Video file — frame preview not available</div>
         {boundingBoxes?.length > 0 && (
           <div style={{
             padding: '8px 16px',
-            background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)',
-            borderRadius: 10, fontSize: 13, color: '#EF4444', fontWeight: 600,
+            background: 'rgba(201,76,76,0.1)', border: '1px solid rgba(201,76,76,0.25)',
+            borderRadius: 10, fontSize: 13, color: '#C94C4C', fontWeight: 600,
           }}>
             {boundingBoxes.length} violation{boundingBoxes.length > 1 ? 's' : ''} detected in video
           </div>
@@ -86,10 +87,10 @@ function AnnotatedImage({ preview, boundingBoxes, violationType }) {
       <div style={{
         position: 'absolute', top: 10, left: 10,
         padding: '4px 10px',
-        background: 'rgba(2,6,23,0.85)',
-        border: '1px solid rgba(6,182,212,0.4)',
-        borderRadius: 6, fontSize: 10, color: '#06B6D4', fontWeight: 700,
-        backdropFilter: 'blur(8px)',
+        background: '#FFFFFF',
+        border: '1px solid rgba(40,124,120,0.2)',
+        borderRadius: 6, fontSize: 10, color: '#287C78', fontWeight: 700,
+        boxShadow: '0 1px 4px rgba(32,36,33,0.08)',
       }}>
         AI ANNOTATED
       </div>
@@ -155,11 +156,11 @@ export default function ResultsPage() {
         >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <h2 style={{ fontSize: 24, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins', marginBottom: 4 }}>
+              <h2 style={{ fontSize: 24, fontWeight: 800, color: '#202421', fontFamily: 'Poppins', marginBottom: 4 }}>
                 Detection Results
               </h2>
-              <p style={{ fontSize: 13, color: '#64748B' }}>
-                Record ID: <span style={{ color: '#06B6D4', fontWeight: 600 }}>{result.recordId}</span>
+              <p style={{ fontSize: 13, color: '#8A9090' }}>
+                Record ID: <span style={{ color: '#287C78', fontWeight: 600 }}>{result.recordId}</span>
               </p>
             </div>
             <div style={{ display: 'flex', gap: 10 }}>
@@ -188,30 +189,30 @@ export default function ResultsPage() {
               transition={{ delay: 0.1 }}
               style={{
                 padding: '16px 20px',
-                background: result.violationDetected ? 'rgba(239,68,68,0.08)' : 'rgba(34,197,94,0.08)',
-                border: `1px solid ${result.violationDetected ? 'rgba(239,68,68,0.25)' : 'rgba(34,197,94,0.25)'}`,
+                background: result.violationDetected ? 'rgba(201,76,76,0.1)' : 'rgba(40,124,120,0.08)',
+                border: `1px solid ${result.violationDetected ? 'rgba(201,76,76,0.25)' : 'rgba(40,124,120,0.2)'}`,
                 borderRadius: 14,
                 display: 'flex', alignItems: 'center', gap: 12,
               }}
             >
               {result.violationDetected ? (
-                <AlertTriangle size={24} color="#EF4444" />
+                <AlertTriangle size={24} color="#C94C4C" />
               ) : (
-                <CheckCircle size={24} color="#22C55E" />
+                <CheckCircle size={24} color="#287C78" />
               )}
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 16, fontWeight: 800, color: result.violationDetected ? '#EF4444' : '#22C55E', fontFamily: 'Poppins' }}>
+                <div style={{ fontSize: 16, fontWeight: 800, color: result.violationDetected ? '#C94C4C' : '#287C78', fontFamily: 'Poppins' }}>
                   {result.isMultipleViolations
                     ? `${result.totalViolations} Violations Detected`
                     : result.violationDetected ? 'Violation Detected' : 'No Violation Found'}
                 </div>
-                <div style={{ fontSize: 12, color: '#94A3B8', marginTop: 2 }}>
+                <div style={{ fontSize: 12, color: '#5A6060', marginTop: 2 }}>
                   Processed in {result.processingTime}s • AI Confidence: {result.confidence}%
                 </div>
               </div>
               {/* Model support badge */}
               {violationMeta.modelSupported === false && (
-                <span style={{ fontSize: 10, padding: '3px 8px', background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.3)', borderRadius: 8, color: '#FCD34D', fontWeight: 600 }}>
+                <span style={{ fontSize: 10, padding: '3px 8px', background: 'rgba(201,130,75,0.1)', border: '1px solid rgba(201,130,75,0.25)', borderRadius: 8, color: '#C9824B', fontWeight: 600 }}>
                   SIMULATION
                 </span>
               )}
@@ -223,9 +224,9 @@ export default function ResultsPage() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
               className="glass-card"
-              style={{ padding: 16 }}
+              style={{ padding: 16, background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}
             >
-              <div style={{ fontSize: 12, color: '#64748B', marginBottom: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
+              <div style={{ fontSize: 12, color: '#8A9090', marginBottom: 12, fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
                 Evidence Media
               </div>
               <AnnotatedImage
@@ -241,10 +242,10 @@ export default function ResultsPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
               className="glass-card"
-              style={{ padding: 18 }}
+              style={{ padding: 18, background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}
             >
-              <div style={{ fontSize: 13, fontWeight: 700, color: '#F8FAFC', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <FileCheck size={14} color="#22C55E" /> Evidence Authenticity
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#202421', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <FileCheck size={14} color="#287C78" /> Evidence Authenticity
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                 {[
@@ -254,8 +255,8 @@ export default function ResultsPage() {
                   ['File Size', result.fileSize],
                 ].map(([k, v]) => (
                   <div key={k} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12 }}>
-                    <span style={{ color: '#64748B' }}>{k}</span>
-                    <span style={{ color: v === 'VERIFIED' ? '#22C55E' : '#F8FAFC', fontWeight: 600, fontFamily: v.startsWith('SHA') ? 'monospace' : 'inherit', fontSize: v.startsWith('SHA') ? 10 : 12 }}>
+                    <span style={{ color: '#8A9090' }}>{k}</span>
+                    <span style={{ color: v === 'VERIFIED' ? '#287C78' : '#202421', fontWeight: 600, fontFamily: v.startsWith('SHA') ? 'monospace' : 'inherit', fontSize: v.startsWith('SHA') ? 10 : 12 }}>
                       {v}
                     </span>
                   </div>
@@ -274,16 +275,16 @@ export default function ResultsPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.15 }}
                   className="glass-card"
-                  style={{ padding: 22, position: 'relative', overflow: 'hidden' }}
+                  style={{ padding: 22, position: 'relative', overflow: 'hidden', background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}
                 >
-                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, transparent, ${severity.color}, transparent)` }} />
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: severity.color }} />
                   
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 18 }}>
                     <div>
-                      <div style={{ fontSize: 11, color: '#64748B', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Violation Type</div>
+                      <div style={{ fontSize: 11, color: '#8A9090', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Violation Type</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                         <span style={{ fontSize: 22 }}>{violationMeta.icon ?? '⚠️'}</span>
-                        <div style={{ fontSize: 17, fontWeight: 800, color: '#F8FAFC', fontFamily: 'Poppins' }}>
+                        <div style={{ fontSize: 17, fontWeight: 800, color: '#202421', fontFamily: 'Poppins' }}>
                           {result.isMultipleViolations ? `${result.totalViolations} Violations` : result.type}
                         </div>
                       </div>
@@ -295,9 +296,9 @@ export default function ResultsPage() {
 
                   {/* Confidence gauge */}
                   <div style={{ marginBottom: 18 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#94A3B8', marginBottom: 6 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#5A6060', marginBottom: 6 }}>
                       <span>Detection Confidence</span>
-                      <span style={{ color: '#22C55E', fontWeight: 700 }}>{result.confidence}%</span>
+                      <span style={{ color: '#287C78', fontWeight: 700 }}>{result.confidence}%</span>
                     </div>
                     <div className="progress-bar" style={{ height: 10 }}>
                       <motion.div
@@ -320,11 +321,11 @@ export default function ResultsPage() {
                       { icon: Shield, label: 'Plate (Est.)', value: result.plateNumber },
                       { icon: User, label: 'Officer ID', value: officer?.policeId },
                     ].map(({ icon: Icon, label, value }) => (
-                      <div key={label} style={{ padding: '10px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 10, border: '1px solid rgba(255,255,255,0.05)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: '#64748B', marginBottom: 4 }}>
+                      <div key={label} style={{ padding: '10px 12px', background: '#FFFFFF', borderRadius: 10, border: '1px solid rgba(32,36,33,0.1)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: '#8A9090', marginBottom: 4 }}>
                           <Icon size={10} /> {label}
                         </div>
-                        <div style={{ fontSize: 12, fontWeight: 600, color: '#F8FAFC', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <div style={{ fontSize: 12, fontWeight: 600, color: '#202421', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {value}
                         </div>
                       </div>
@@ -339,10 +340,10 @@ export default function ResultsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className="glass-card"
-                    style={{ padding: 20 }}
+                    style={{ padding: 20, background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#F8FAFC', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-                      <AlertTriangle size={14} color="#EF4444" />
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#202421', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <AlertTriangle size={14} color="#C94C4C" />
                       {result.totalViolations} Detected Violations
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -352,7 +353,7 @@ export default function ResultsPage() {
                         return (
                           <div key={i} style={{
                             padding: '12px 14px',
-                            background: 'rgba(255,255,255,0.02)',
+                            background: '#FFFFFF',
                             border: `1px solid ${sv.border}`,
                             borderRadius: 10,
                           }}>
@@ -360,8 +361,8 @@ export default function ResultsPage() {
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                                 <span style={{ fontSize: 18 }}>{vm.icon ?? '⚠️'}</span>
                                 <div>
-                                  <div style={{ fontSize: 12.5, fontWeight: 700, color: '#F8FAFC' }}>{v.type}</div>
-                                  <div style={{ fontSize: 10, color: '#64748B' }}>{v.vehicleType} • {vm.modelSupported ? 'AI Detected' : 'Simulated'}</div>
+                                  <div style={{ fontSize: 12.5, fontWeight: 700, color: '#202421' }}>{v.type}</div>
+                                  <div style={{ fontSize: 10, color: '#8A9090' }}>{v.vehicleType} • {vm.modelSupported ? 'AI Detected' : 'Simulated'}</div>
                                 </div>
                               </div>
                               <span className={`badge ${v.severity === 'Critical' ? 'badge-critical' : v.severity === 'High' ? 'badge-red' : v.severity === 'Medium' ? 'badge-orange' : 'badge-green'}`} style={{ fontSize: 9 }}>
@@ -378,7 +379,7 @@ export default function ResultsPage() {
                                   style={{ background: sv.color }}
                                 />
                               </div>
-                              <span style={{ fontSize: 11, color: '#22C55E', fontWeight: 700, minWidth: 38 }}>{v.confidence.toFixed(1)}%</span>
+                              <span style={{ fontSize: 11, color: '#287C78', fontWeight: 700, minWidth: 38 }}>{v.confidence.toFixed(1)}%</span>
                             </div>
                           </div>
                         );
@@ -395,18 +396,18 @@ export default function ResultsPage() {
                     transition={{ delay: 0.25 }}
                     style={{
                       padding: '14px 18px',
-                      background: 'rgba(239,68,68,0.1)',
-                      border: '1px solid rgba(239,68,68,0.35)',
+                      background: 'rgba(201,76,76,0.1)',
+                      border: '1px solid rgba(201,76,76,0.25)',
                       borderRadius: 14,
                       display: 'flex', alignItems: 'center', gap: 12,
                     }}
                   >
-                    <AlertCircle size={24} color="#EF4444" />
+                    <AlertCircle size={24} color="#C94C4C" />
                     <div>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: '#EF4444', marginBottom: 2 }}>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: '#C94C4C', marginBottom: 2 }}>
                         ⚠ REPEAT OFFENDER DETECTED
                       </div>
-                      <div style={{ fontSize: 12, color: '#94A3B8' }}>
+                      <div style={{ fontSize: 12, color: '#5A6060' }}>
                         This vehicle has {result.previousViolations} previous violation records. Escalate for legal action.
                       </div>
                     </div>
@@ -419,21 +420,21 @@ export default function ResultsPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                   className="glass-card"
-                  style={{ padding: 20 }}
+                  style={{ padding: 20, background: '#FFFFFF', border: '1px solid rgba(32,36,33,0.1)', boxShadow: '0 1px 4px rgba(32,36,33,0.08)' }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                    <div style={{ width: 28, height: 28, background: 'rgba(6,182,212,0.12)', border: '1px solid rgba(6,182,212,0.25)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Lightbulb size={14} color="#06B6D4" />
+                    <div style={{ width: 28, height: 28, background: 'rgba(40,124,120,0.08)', border: '1px solid rgba(40,124,120,0.2)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Lightbulb size={14} color="#287C78" />
                     </div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: '#F8FAFC' }}>AI Recommendation</div>
-                    <span style={{ marginLeft: 'auto', fontSize: 10, color: '#06B6D4', fontWeight: 600, padding: '2px 8px', background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.2)', borderRadius: 10 }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#202421' }}>AI Recommendation</div>
+                    <span style={{ marginLeft: 'auto', fontSize: 10, color: '#287C78', fontWeight: 600, padding: '2px 8px', background: 'rgba(40,124,120,0.08)', border: '1px solid rgba(40,124,120,0.2)', borderRadius: 10 }}>
                       {recommendation.priority} Priority
                     </span>
                   </div>
-                  <p style={{ fontSize: 13, color: '#94A3B8', lineHeight: 1.7, marginBottom: 12 }}>
+                  <p style={{ fontSize: 13, color: '#5A6060', lineHeight: 1.7, marginBottom: 12 }}>
                     {recommendation.text}
                   </p>
-                  <div style={{ fontSize: 12, color: '#06B6D4', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <div style={{ fontSize: 12, color: '#287C78', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 6 }}>
                     <Zap size={12} /> Suggested Action: {recommendation.action}
                   </div>
                 </motion.div>
@@ -450,12 +451,12 @@ export default function ResultsPage() {
               whileTap={{ scale: 0.98 }}
               style={{
                 width: '100%', padding: '14px 24px',
-                background: 'linear-gradient(135deg, #2563EB, #1D4ED8)',
+                background: '#287C78',
                 border: 'none', borderRadius: 12,
                 fontSize: 14.5, fontWeight: 700, color: 'white',
                 cursor: 'pointer',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-                boxShadow: '0 8px 25px rgba(37,99,235,0.3)',
+                boxShadow: '0 2px 8px rgba(40,124,120,0.15)',
               }}
             >
               <Save size={16} /> Save Record to Database
