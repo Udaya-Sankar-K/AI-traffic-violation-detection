@@ -229,7 +229,11 @@ export async function runDetection(file) {
   }
 
   // ── Filter to only what is actually detected ──────────────────────────────
-  const detected = rawViolations.filter(v => v.detected && v.confidence > 0.3);
+  const detected = rawViolations.filter(v => 
+    v.detected && 
+    v.confidence > 0.3 && 
+    v.type !== 'Zebra Crossing Violation' // User requested to never show this for uploaded images
+  );
 
   // ── Build metadata ────────────────────────────────────────────────────────
   const elapsed = ((Date.now() - start) / 1000).toFixed(2);
