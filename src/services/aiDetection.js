@@ -169,35 +169,22 @@ Respond with ONLY valid JSON, no explanation, no markdown, no code block:
 // ─── FALLBACK DETECTION: Deterministic Mock ───────────────────────────────────
 
 /**
- * When Gemini API is not available, use a deterministic mock.
- * Same image → same fingerprint → same violations → same result.
- * Based on image file content, not pure randomness.
+ * FALLBACK: Always returns all 3 violations.
+ * Confidence values are DETERMINISTIC per image (same image = same confidence).
+ * Uses FNV-1a fingerprint as seed for LCG so values never change between uploads.
  */
 async function analyzeWithMock(file) {
   const fp  = await computeFingerprint(file);
   const rng = new SeededRNG(fp);
 
-  // Deterministic scenario selection from image fingerprint
-  const scenarios = [
-    { violations: ['Triple Riding', 'Helmetless Riding'], w: 0.40 },
-    { violations: ['Helmetless Riding'],                   w: 0.30 },
-    { violations: ['Signal Jumping'],                      w: 0.20 },
-    { violations: ['Triple Riding', 'Helmetless Riding', 'Signal Jumping'], w: 0.10 },
+  // All 3 violations are always returned — confidence differs per image fingerprint
+  return [
+    { type: 'Triple Riding',     detected: true, confidence: parseFloat(rng.range(0.88, 0.97).toFixed(2)) },
+    { type: 'Helmetless Riding', detected: true, confidence: parseFloat(rng.range(0.88, 0.97).toFixed(2)) },
+    { type: 'Signal Jumping',    detected: true, confidence: parseFloat(rng.range(0.88, 0.97).toFixed(2)) },
   ];
-
-  let r = rng.next();
-  let scenario = scenarios[0];
-  for (const s of scenarios) {
-    r -= s.w;
-    if (r <= 0) { scenario = s; break; }
-  }
-
-  return scenario.violations.map(type => ({
-    type,
-    detected: true,
-    confidence: parseFloat(rng.range(0.88, 0.97).toFixed(2)),
-  }));
 }
+
 
 // ─── Main Detection Function ──────────────────────────────────────────────────
 
