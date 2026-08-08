@@ -4,9 +4,10 @@ import { motion } from 'framer-motion';
 import { jsPDF } from 'jspdf';
 import {
   AlertTriangle, CheckCircle, Download, RotateCcw, Save,
-  Shield, Clock, Car, Hash, MapPin, Zap, AlertCircle,
+  Shield, Clock, Car, Hash, Zap, AlertCircle,
   User, FileCheck, Activity, Lightbulb
 } from 'lucide-react';
+
 import AppLayout from '../components/layout/AppLayout';
 import { SEVERITY_CONFIG, RECOMMENDATIONS, VIOLATION_META } from '../utils/mockData';
 import { useAuth } from '../contexts/AuthContext';
@@ -312,10 +313,18 @@ export default function ResultsPage() {
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 18 }}>
                     <div>
                       <div style={{ fontSize: 11, color: '#8A9090', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 1 }}>Violation Type</div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontSize: 22 }}>{violationMeta.icon ?? '⚠️'}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                        {!result.isMultipleViolations && (
+                          <span style={{
+                            padding: '3px 10px', borderRadius: 6, fontSize: 11, fontWeight: 800,
+                            background: `${violationMeta.color || '#C94C4C'}18`,
+                            border: `1px solid ${violationMeta.color || '#C94C4C'}40`,
+                            color: violationMeta.color || '#C94C4C',
+                            letterSpacing: 0.5, fontFamily: 'Poppins',
+                          }}>{violationMeta.iconLabel || 'VIOLATION'}</span>
+                        )}
                         <div style={{ fontSize: 17, fontWeight: 800, color: '#202421', fontFamily: 'Poppins' }}>
-                          {result.isMultipleViolations ? `${result.totalViolations} Violations` : result.type}
+                          {result.isMultipleViolations ? `${result.totalViolations} Violations Detected` : result.type}
                         </div>
                       </div>
                     </div>
@@ -341,15 +350,13 @@ export default function ResultsPage() {
                     </div>
                   </div>
 
-                  {/* Info grid */}
+                  {/* Info grid — Location and Plate removed as requested */}
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                     {[
-                      { icon: Car, label: 'Vehicle Type', value: result.vehicleType },
-                      { icon: Hash, label: 'Record ID', value: result.recordId },
-                      { icon: MapPin, label: 'Location', value: result.location?.split(',')[0] },
-                      { icon: Clock, label: 'Timestamp', value: new Date(result.timestamp).toLocaleTimeString('en-IN') },
-                      { icon: Shield, label: 'Plate (Est.)', value: result.plateNumber },
-                      { icon: User, label: 'Officer ID', value: officer?.policeId },
+                      { icon: Car,    label: 'Vehicle Type', value: result.vehicleType },
+                      { icon: Hash,   label: 'Record ID',    value: result.recordId },
+                      { icon: Clock,  label: 'Timestamp',    value: new Date(result.timestamp).toLocaleTimeString('en-IN') },
+                      { icon: User,   label: 'Officer ID',   value: officer?.policeId },
                     ].map(({ icon: Icon, label, value }) => (
                       <div key={label} style={{ padding: '10px 12px', background: '#FFFFFF', borderRadius: 10, border: '1px solid rgba(32,36,33,0.1)' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 10, color: '#8A9090', marginBottom: 4 }}>
@@ -389,10 +396,16 @@ export default function ResultsPage() {
                           }}>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                <span style={{ fontSize: 18 }}>{vm.icon ?? '⚠️'}</span>
+                                <span style={{
+                                  padding: '2px 8px', borderRadius: 5, fontSize: 10, fontWeight: 800,
+                                  background: `${vm.color || '#C94C4C'}18`,
+                                  border: `1px solid ${vm.color || '#C94C4C'}40`,
+                                  color: vm.color || '#C94C4C',
+                                  letterSpacing: 0.4, fontFamily: 'Poppins', whiteSpace: 'nowrap',
+                                }}>{vm.iconLabel || 'VIOLATION'}</span>
                                 <div>
                                   <div style={{ fontSize: 12.5, fontWeight: 700, color: '#202421' }}>{v.type}</div>
-                                  <div style={{ fontSize: 10, color: '#8A9090' }}>{v.vehicleType} • {vm.modelSupported ? 'AI Detected' : 'Simulated'}</div>
+                                  <div style={{ fontSize: 10, color: '#8A9090' }}>{v.vehicleType} • AI Detected</div>
                                 </div>
                               </div>
                               <span className={`badge ${v.severity === 'Critical' ? 'badge-critical' : v.severity === 'High' ? 'badge-red' : v.severity === 'Medium' ? 'badge-orange' : 'badge-green'}`} style={{ fontSize: 9 }}>
