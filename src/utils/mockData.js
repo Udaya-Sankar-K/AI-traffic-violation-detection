@@ -27,14 +27,14 @@ export const ALL_VIOLATION_TYPES = [
     modelSupported: true,
   },
   {
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
-    vehicleType: 'Two-Wheeler',
-    icon: 'S',
-    iconLabel: 'SIGNAL JUMP',
+    vehicleType: 'Pedestrian',
+    icon: 'Z',
+    iconLabel: 'ZEBRA CROSS',
     color: '#C94C4C',
-    description: 'Vehicle crossing a red-light signal',
-    modelClass: 'signal_jump',
+    description: 'Person standing on or crossing a zebra crossing creating a traffic obstruction',
+    modelClass: 'zebra_crossing',
     modelSupported: true,
   },
 ];
@@ -79,7 +79,7 @@ export const MOCK_VIOLATIONS = [
   },
   {
     id: 'VIO-2024-002',
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
     confidence: 91.2,
     timestamp: new Date(Date.now() - 1000 * 60 * 90).toISOString(),
@@ -123,11 +123,11 @@ export const MOCK_VIOLATIONS = [
     plateNumber: 'KA-05-XY-3456',
     repeatOffender: true,
     previousViolations: 3,
-    subViolations: ['Signal Jumping', 'Helmetless Riding', 'Signal Jumping'],
+    subViolations: ['Zebra Crossing Violation', 'Helmetless Riding', 'Zebra Crossing Violation'],
   },
   {
     id: 'VIO-2024-005',
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
     confidence: 93.1,
     timestamp: new Date(Date.now() - 1000 * 60 * 320).toISOString(),
@@ -159,7 +159,7 @@ export const MOCK_VIOLATIONS = [
   },
   {
     id: 'VIO-2024-007',
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
     confidence: 85.4,
     timestamp: new Date(Date.now() - 1000 * 60 * 480).toISOString(),
@@ -189,7 +189,7 @@ export const MOCK_VIOLATIONS = [
   },
   {
     id: 'VIO-2024-009',
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
     confidence: 96.2,
     timestamp: new Date(Date.now() - 1000 * 60 * 620).toISOString(),
@@ -236,7 +236,7 @@ export const MOCK_VIOLATIONS = [
   },
   {
     id: 'VIO-2024-012',
-    type: 'Signal Jumping',
+    type: 'Zebra Crossing Violation',
     severity: 'High',
     confidence: 95.8,
     timestamp: new Date(Date.now() - 1000 * 60 * 820).toISOString(),
@@ -281,7 +281,7 @@ export const MOCK_MONTHLY_TREND = [
 export const MOCK_CATEGORY_DATA = [
   { name: 'Helmetless Riding', value: 45, color: '#C94C4C' },
   { name: 'Triple Riding',     value: 35, color: '#C94C4C' },
-  { name: 'Signal Jumping',    value: 20, color: '#C94C4C' },
+  { name: 'Zebra Crossing Violation',    value: 20, color: '#C94C4C' },
 ];
 
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
@@ -289,12 +289,12 @@ export const MOCK_CATEGORY_DATA = [
 // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
 
 export const MOCK_HOTSPOTS = [
-  { location: 'MG Road Junction',     count: 142, risk: 'Critical', topViolation: 'Signal Jumping' },
+  { location: 'MG Road Junction',     count: 142, risk: 'Critical', topViolation: 'Zebra Crossing Violation' },
   { location: 'Brigade Road',          count: 98,  risk: 'High',    topViolation: 'Helmetless Riding' },
-  { location: 'Outer Ring Road',       count: 87,  risk: 'High',    topViolation: 'Signal Jumping' },
+  { location: 'Outer Ring Road',       count: 87,  risk: 'High',    topViolation: 'Zebra Crossing Violation' },
   { location: 'Hosur Road',            count: 73,  risk: 'Medium',  topViolation: 'Triple Riding' },
   { location: 'Koramangala 7th Block', count: 61,  risk: 'Medium',  topViolation: 'Helmetless Riding' },
-  { location: 'Electronic City',       count: 52,  risk: 'Medium',  topViolation: 'Signal Jumping' },
+  { location: 'Electronic City',       count: 52,  risk: 'Medium',  topViolation: 'Zebra Crossing Violation' },
   { location: 'Whitefield Main Road',  count: 44,  risk: 'Low',     topViolation: 'Helmetless Riding' },
   { location: 'Indiranagar 100ft',     count: 38,  risk: 'Low',     topViolation: 'Helmetless Riding' },
 ];
@@ -316,7 +316,7 @@ export const MOCK_ALERTS = [
     id: 'ALT-002',
     type: 'REPEAT_OFFENDER',
     title: 'Repeat Offender Detected',
-    message: 'Vehicle KA-05-XY-3456 flagged for 4th violation this month (Signal Jumping).',
+    message: 'Vehicle KA-05-XY-3456 flagged for 4th violation this month (Zebra Crossing Violation).',
     time: '15 min ago',
     isRead: false,
   },
@@ -373,9 +373,9 @@ export const RECOMMENDATIONS = {
     action: 'Two-wheeler checkpoint at exit roads',
     priority: 'High',
   },
-  'Signal Jumping': {
-    text: 'Increase signal monitoring during peak traffic hours. Deploy personnel at high-risk intersections. Consider installing red-light cameras for automated detection and challan generation.',
-    action: 'Install automated red-light camera',
+  'Zebra Crossing Violation': {
+    text: 'Deploy traffic personnel at marked pedestrian crossings during peak hours. Install warning signs and speed bumps before zebra crossings. Issue challans for pedestrians obstructing traffic flow on crossings.',
+    action: 'Deploy personnel at zebra crossings',
     priority: 'High',
   },
   'Multiple Violations': {
