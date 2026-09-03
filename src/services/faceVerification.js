@@ -46,8 +46,8 @@ export async function detectFace(videoEl) {
   if (!modelsLoaded || !videoEl) return null;
   try {
     const options = new faceapi.TinyFaceDetectorOptions({
-      inputSize: 320,
-      scoreThreshold: 0.5,
+      inputSize: 416, // Increased for better detection accuracy
+      scoreThreshold: 0.3, // Lowered threshold to accept more faces
     });
     const detection = await faceapi
       .detectSingleFace(videoEl, options)
@@ -64,17 +64,21 @@ export async function detectFace(videoEl) {
  */
 export function isFaceCentered(detection, videoWidth, videoHeight) {
   if (!detection) return false;
+  if (!videoWidth || !videoHeight) return true; // Fallback
+
   const { box } = detection.detection;
   const centerX = box.x + box.width / 2;
   const centerY = box.y + box.height / 2;
-  const tolerance = videoWidth * 0.18;
+  
+  // Loosen tolerance for centering
+  const tolerance = videoWidth * 0.35; 
   const areaRatio = (box.width * box.height) / (videoWidth * videoHeight);
 
   return (
     Math.abs(centerX - videoWidth / 2) < tolerance &&
-    Math.abs(centerY - videoHeight / 2) < tolerance * 1.3 &&
-    areaRatio > 0.04 &&
-    areaRatio < 0.55
+    Math.abs(centerY - videoHeight / 2) < tolerance * 1.5 &&
+    areaRatio > 0.015 && // Accept smaller faces
+    areaRatio < 0.85   // Accept larger faces
   );
 }
 
